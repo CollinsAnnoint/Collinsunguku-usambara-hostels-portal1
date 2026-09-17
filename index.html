@@ -1,0 +1,2978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collins Unguku Usambara Hostels — Live System</title>
+<style>
+  :root{ --green:#0e7a4d; --green-d:#0a5c39; --green-l:#e5f4ec; --gold:#c9a227;
+    --ink:#1c2b24; --muted:#5c6b62; --line:#dce6df; --red:#c0392b; --red-l:#fbe9e7;
+    --blue:#1d6fa5; --blue-l:#e8f2fa; --whatsapp:#25D366;
+    --radius:14px; --radius-sm:8px;
+    --bg1:#0e7a4d; --bg2:#0a5c39; --bg3:#1d6fa5;
+    --shadow:0 1px 3px rgba(0,0,0,.05); --shadow-lg:0 10px 30px rgba(0,0,0,.14);
+    --head:'Segoe UI',system-ui,Arial,sans-serif; }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  /* Page background: rich animated gradient by default (theme-controllable) */
+  body{font-family:'Segoe UI',system-ui,Arial,sans-serif; color:var(--ink); line-height:1.5;
+    background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3),var(--bg2),var(--bg1));
+    background-size:400% 400%;
+    animation:bgShift 28s ease-in-out infinite;
+    min-height:100vh; min-height:100dvh;}
+  body[data-bg="light"]{ background:linear-gradient(180deg,#f2f7f4,#e7f0ea); animation:none;
+    background-attachment:fixed; }
+  body[data-bg="light"] footer{color:#5c6b62;}
+  body[data-font="serif"] h1,body[data-font="serif"] h2,body[data-font="serif"] h3{font-family:Georgia,'Times New Roman',serif; letter-spacing:.2px;}
+  h1,h2,h3,h4{font-family:var(--head);}
+  @keyframes bgShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+  /* Views fade in on switch */
+  html{scroll-behavior:smooth;}
+  :focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:6px;}
+  ::selection{background:var(--green-l);color:var(--green-d);}
+  section{animation:fadeIn .4s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes popIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+  header{background:linear-gradient(120deg,var(--green),var(--green-d)); color:#fff;
+    box-shadow:0 2px 16px rgba(0,0,0,.16); position:sticky; top:0; z-index:40;}
+  body[data-layout="classic"] header{box-shadow:none; border-bottom:2px solid var(--gold);}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 18px;}
+  header .wrap{display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding-top:14px; padding-bottom:14px;}
+  .badge{width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:26px;flex:none;}
+  header h1{font-size:22px; letter-spacing:.4px;}
+  header p{opacity:.9; font-size:12.5px; margin-top:2px;}
+  nav{margin-left:auto; display:flex; gap:7px; flex-wrap:wrap; align-items:center;}
+  nav button{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.32);color:#fff;padding:9px 14px;border-radius:9px;cursor:pointer;font-weight:600;font-size:13px;transition:all .18s ease;}
+  nav button.active{background:#fff;color:var(--green);}
+  nav button:hover{background:rgba(255,255,255,.32); transform:translateY(-1px);}
+  #loginTopBtn{background:var(--gold); border:none; color:#fff; font-weight:700; box-shadow:0 2px 8px rgba(0,0,0,.18);}
+  #loginTopBtn:hover{background:#a98a1f; transform:translateY(-1px);}
+  main{padding:26px 0 64px;}
+  /* Jump targets clear the sticky header when navigated to */
+  #featuresSection,#guideSection,#eventsSection,#pollsSection,#lostfoundSection,#updatesSection,#aboutSection{scroll-margin-top:86px;}
+  .jumpnav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+  .jumpnav button{background:#fff;border:1px solid var(--line);color:var(--green-d);border-radius:99px;
+    padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s;box-shadow:var(--shadow);}
+  .jumpnav button:hover{background:var(--green-l);border-color:var(--green);transform:translateY(-1px);}
+  /* Neat sectioned grid for the community boards (Events · Polls · Lost & Found) */
+  .boardGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-top:16px;}
+  .boardGrid > .card{margin-top:0 !important;display:flex;flex-direction:column;}
+  .sectionLabel{display:flex;align-items:center;gap:12px;margin:28px 0 0;}
+  .sectionLabel span.t{font-size:19px;font-weight:800;color:var(--green-d);white-space:nowrap;}
+  .sectionLabel span.line{flex:1;height:1px;background:var(--line);}
+  /* Photo gallery interactivity — hover lift + click-to-open lightbox */
+  #gallerySection img{cursor:zoom-in;transition:transform .35s ease,box-shadow .35s ease,filter .35s ease;}
+  #gallerySection img:hover{transform:scale(1.045);box-shadow:0 10px 26px rgba(0,0,0,.2);filter:saturate(1.1) brightness(1.03);}
+  #gallerySection img:active{transform:scale(.97);}
+  .lb-btn{width:46px;height:46px;border-radius:50%;border:none;background:rgba(255,255,255,.14);color:#fff;font-size:24px;line-height:1;cursor:pointer;transition:background .25s ease,transform .25s ease;display:flex;align-items:center;justify-content:center;z-index:5;}
+  .lb-btn:hover{background:rgba(255,255,255,.3);transform:scale(1.08);}
+  @keyframes lbZoom{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+  @keyframes lbFade{from{opacity:0}to{opacity:1}}
+  .card{background:rgba(255,255,255,.98);border:1px solid var(--line);border-radius:var(--radius);padding:22px;
+    box-shadow:var(--shadow);transition:transform .3s ease,box-shadow .3s ease;}
+  .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);}
+  body[data-bg="light"] .card{box-shadow:0 6px 22px rgba(20,60,40,.10);}
+  body[data-layout="classic"] .card{background:#fff; border:1px solid var(--line); box-shadow:none;
+    border-left:4px solid var(--green);}
+  .card h2{font-size:18px;margin-bottom:14px;color:var(--green-d); display:flex; align-items:center; gap:8px;}
+  body[data-layout="classic"] .card h2{border-bottom:1px solid var(--line); padding-bottom:8px;}
+  .hidden{display:none!important;}
+  .btn{background:var(--green);color:#fff;border:none;border-radius:var(--radius-sm);padding:11px 18px;cursor:pointer;font-weight:600;font-size:14px;transition:transform .15s ease,box-shadow .2s ease,background .2s ease;box-shadow:0 3px 10px rgba(0,0,0,.12);}
+  .btn:hover{background:var(--green-d);transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.18);}
+  .btn:active{transform:translateY(0);}
+  .btn.gold{background:var(--gold);}
+  .btn.gold:hover{background:#a98a1f;}
+  .btn.ghost{background:#fff;color:var(--green);border:1px solid var(--green);box-shadow:none;}
+  .btn.ghost:hover{background:var(--green-l);}
+  .btn.danger{background:var(--red);}
+  .btn.danger:hover{background:#a03126;}
+  .btn.sm{padding:7px 12px;font-size:12.5px; box-shadow:none;}
+  .btn.wa{background:var(--whatsapp);}
+  .btn.wa:hover{background:#1ebe57;}
+  input,select,textarea,button{font-size:14px; font-family:inherit;}
+  input[type=text],input[type=password],input[type=number],input[type=tel],input[type=color],select,textarea{
+    border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:10px 12px;background:#fff;width:100%;transition:border-color .2s ease, box-shadow .2s ease;}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px var(--green-l);}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .field label{display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin:12px 0 5px;}
+  .hint{font-size:12px;color:var(--muted);margin-top:10px;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  th,td{padding:11px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{background:#f7faf8;color:var(--green-d);font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;}
+  tr:hover td{background:#fbfdfc;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:99px;}
+  .tag.b2{background:#e3f2fd;color:#0d47a1;} .tag.b3{background:#e8f5e9;color:#1b5e20;}
+  .tag.b4{background:#fff3e0;color:#e65100;} .tag.b5{background:#f3e5f5;color:#6a1b9a;}
+  .tag.open{background:var(--blue-l);color:var(--blue);} .tag.done{background:var(--green-l);color:var(--green-d);}
+  .actions{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap;}
+  .report{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px;background:#fff;}
+  .report .top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px;}
+  .report .who{font-weight:700;} .report .when{font-size:12px;color:var(--muted);}
+  .report p{font-size:13.5px;margin:6px 0;}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:10px;font-size:13.5px;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;transition:.25s;z-index:50;pointer-events:none;}
+  .toast.show{opacity:1;}
+  .empty{text-align:center;color:var(--muted);padding:26px 10px;font-size:14px;}
+  footer{color:#d9ece2;font-size:12.5px;text-align:center;padding:26px 0 34px;}
+  .tabs{display:flex;gap:8px;margin-bottom:16px;background:#eef2f0;padding:5px;border-radius:10px;}
+  .tab{padding:9px 18px;border-radius:8px;cursor:pointer;font-weight:700;color:var(--muted);flex:1;text-align:center;transition:.2s;}
+  .tab.active{background:var(--green);color:#fff; box-shadow:0 3px 8px rgba(0,0,0,.15);}
+  .login-card{max-width:440px;margin:40px auto;}
+  .login-card h2{text-align:center; justify-content:center;}
+  .error{background:var(--red-l);color:var(--red);padding:9px 12px;border-radius:8px;font-size:13px;margin-top:10px;}
+  .welcome{background:var(--green-l);border:1px solid #c3e6d3;color:var(--green-d);padding:12px 16px;border-radius:10px;font-size:13.5px;margin-bottom:18px;}
+  .who-box{border:1px solid var(--line);border-radius:12px;padding:16px;background:#f7faf8;margin-bottom:16px;}
+  .who-box .lbl{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.6px;}
+  .who-box .val{font-size:16px;font-weight:700;margin-top:4px;}
+  .banner-title{font-size:21px;font-weight:800; letter-spacing:.3px;}
+  .banner-quote{font-size:15.5px;line-height:1.75;font-style:italic;}
+  .article-card{border-radius:14px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.18);}
+
+  /* ================= Collo AI chat widget ================= */
+  @keyframes colloPulse{0%{box-shadow:0 0 0 0 rgba(201,162,39,.45)}70%{box-shadow:0 0 0 16px rgba(201,162,39,0)}100%{box-shadow:0 0 0 0 rgba(201,162,39,0)}}
+  #colloFab{position:fixed;left:20px;bottom:20px;width:60px;height:60px;border-radius:50%;
+    background:linear-gradient(135deg,var(--gold),#a98a1f);color:#fff;border:none;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-size:28px;
+    box-shadow:0 6px 20px rgba(0,0,0,.3);z-index:46;animation:colloPulse 2.4s infinite;
+    transition:transform .2s ease;}
+  #colloFab:hover{transform:scale(1.08);}
+  #colloFab .dot{position:absolute;top:2px;right:2px;width:13px;height:13px;border-radius:50%;background:#22c55e;border:2px solid #fff;}
+  #colloWindow{position:fixed;left:20px;bottom:90px;width:368px;max-width:calc(100vw - 24px);
+    height:min(600px,calc(100vh - 130px));display:flex;flex-direction:column;overflow:hidden;
+    background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 50px rgba(0,0,0,.28);
+    z-index:46;animation:popIn .25s ease;}
+  .cw-head{background:linear-gradient(120deg,var(--green),var(--green-d));color:#fff;padding:12px 14px;
+    display:flex;align-items:center;gap:11px;}
+  .cw-ava{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#a98a1f);
+    display:flex;align-items:center;justify-content:center;font-size:22px;flex:none;}
+  .cw-head b{font-size:15px;display:flex;align-items:center;gap:6px;}
+  .cw-online{font-size:11px;opacity:.92;display:flex;align-items:center;gap:4px;}
+  .cw-online::before{content:"";width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;}
+  .cw-close{margin-left:auto;background:rgba(255,255,255,.15);border:none;color:#fff;width:30px;height:30px;
+    border-radius:50%;cursor:pointer;font-size:18px;line-height:1;}
+  .cw-close:hover{background:rgba(255,255,255,.3);}
+  #colloMsgs{flex:1;overflow-y:auto;padding:14px;background:#f2f7f4;display:flex;flex-direction:column;gap:9px;}
+  .cmsg{max-width:82%;padding:9px 13px;border-radius:15px;font-size:13.5px;line-height:1.5;white-space:pre-wrap;word-wrap:break-word;}
+  .cmsg.bot{align-self:flex-start;background:#fff;border:1px solid var(--line);border-top-left-radius:4px;
+    box-shadow:0 1px 3px rgba(0,0,0,.05);}
+  .cmsg.user{align-self:flex-end;background:linear-gradient(135deg,var(--green),var(--green-d));color:#fff;border-bottom-right-radius:4px;}
+  .cmsg.typing{color:var(--muted);font-style:italic;}
+  .cmsg.err{background:var(--red-l);color:var(--red);border:1px solid #f2c1bb;}
+  #colloChips{display:flex;flex-wrap:wrap;gap:6px;padding:4px 14px 8px;background:#f2f7f4;border-top:1px solid #e6efe9;}
+  #colloChips button{border:1px solid var(--green);background:#fff;color:var(--green-d);border-radius:99px;
+    padding:6px 11px;font-size:12px;cursor:pointer;font-weight:600;transition:.15s;}
+  #colloChips button:hover{background:var(--green-l);}
+  .cw-in{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);background:#fff;}
+  .cw-in input{flex:1;border:1.5px solid var(--line);border-radius:99px;padding:10px 14px;font-size:13.5px;}
+  .cw-in input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px var(--green-l);}
+  .cw-send{background:var(--green);color:#fff;border:none;border-radius:99px;width:44px;height:44px;
+    cursor:pointer;font-size:18px;flex:none;}
+  .cw-send:hover{background:var(--green-d);}
+  .collo-launch-hint{position:fixed;left:20px;bottom:86px;background:#fff;border:1px solid var(--line);
+    padding:8px 12px;border-radius:12px;font-size:12px;color:var(--muted);box-shadow:0 4px 12px rgba(0,0,0,.12);
+    z-index:45;max-width:220px;}
+  @media(max-width:520px){#colloFab{left:14px;bottom:14px;} #colloWindow{left:8px;bottom:84px;width:calc(100vw - 16px);}
+    .collo-launch-hint{left:14px;bottom:80px;}}
+  @media(max-width:760px){.grid{grid-template-columns:1fr;} header h1{font-size:18px;} .badge{width:44px;height:44px;font-size:22px;}}
+</style>
+</head>
+<body>
+
+<!-- Site-wide urgent notice (set by the Overseer; visible on every page) -->
+<div id="urgentBanner" class="hidden" style="background:#fff3cd;color:#7a5200;border-bottom:1px solid #ffe69c;font-size:14px;position:sticky;top:0;z-index:60;box-shadow:0 1px 6px rgba(0,0,0,.08);"></div>
+
+<header>
+  <div class="wrap">
+    <div class="badge">🏠</div>
+    <div>
+      <h1>COLLINS UNGUKU USAMBARA HOSTELS</h1>
+      <p>Live Records &amp; Reporting · Overseer: Congressman <b>Collins Unguku</b> (WhatsApp 0769679217)</p>
+    </div>
+    <nav id="nav" class="hidden">
+      <button data-view="home">🏠 Home</button>
+      <button data-view="student" class="hidden">My Record</button>
+      <button data-view="records" class="hidden">Records</button>
+      <button data-view="reports" class="hidden">Reports</button>
+      <button data-view="reviews" class="hidden">⭐ Reviews</button>
+      <button data-view="settings" class="hidden">⚙️ Settings</button>
+      <button id="loginTopBtn" class="hidden" onclick="showLogin()">🔐 Sign In</button>
+      <button id="logoutBtn" class="hidden">Logout</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="offlineBanner" class="hidden" style="background:var(--red-l);border:1px solid #f2c1bb;color:var(--red);padding:12px 15px;border-radius:10px;font-size:13.5px;margin-bottom:16px;">
+    ⚠️ <b>This preview is offline.</b> The login only works when the app is opened through its <b>live server link</b> (the running "Usambara live server" preview), not as a plain file. If you're already on the live link, the server may still be starting — wait a moment and refresh.
+  </div>
+
+  <!-- Data-size alert banner (shown to the overseer) -->
+  <div id="dataAlertBanner" class="hidden" style="background:#fff3e0;border:1px solid #ffd6a8;color:#b25d00;padding:12px 15px;border-radius:10px;font-size:13.5px;margin-bottom:16px;">
+    ⚠️ <b>Data is getting large.</b> Your records total <b id="dacount">0</b> entries (size <span id="dasize">0</span>). For a fast system, <b>compress or delete unneeded data</b> — <b>Back up first</b>, then clean up old reports or reviews.
+  </div>
+
+
+  <!-- HOME / LANDING -->
+  <section id="homeView">
+    <div class="card" style="text-align:center;padding:40px 20px;">
+      <img id="homePhoto" src="usambara_08.jpg" onerror="this.onerror=null;this.src='usambara_08.jpg';" alt="Usambara Male Hostels" style="width:100%;max-width:760px;height:230px;object-fit:cover;border-radius:14px;border:1px solid var(--line);box-shadow:0 4px 14px rgba(0,0,0,.12);">
+      <h1 id="homeTitle" style="font-size:28px;color:var(--green-d);margin:18px 0 6px;">COLLINS UNGUKU USAMBARA HOSTELS</h1>
+      <p id="homeTagline" style="color:var(--muted);font-size:16px;max-width:680px;margin:0 auto;">
+        Collins Unguku · Student Records &amp; Problem Reporting System · Blocks 2, 3, 4 &amp; 5
+      </p>
+      <p style="margin-top:14px;color:var(--ink);">
+        Overseer: <b>Congressman Collins Unguku</b> · WhatsApp <b>0769679217</b>
+      </p>
+      <div id="homeActions" style="margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn gold" onclick="showLogin()">🔐 Sign In</button>
+        <button class="btn ghost" onclick="openAbout()">About the Overseer</button>
+      </div>
+    </div>
+
+    <!-- Quick-jump nav (the home page is long — this helps residents find sections fast) -->
+    <div class="card" style="margin-top:16px;padding:14px 18px;">
+      <div class="jumpnav">
+        <button onclick="jumpTo('guideSection')">📋 Guide</button>
+        <button onclick="jumpTo('eventsSection')">📅 Events</button>
+        <button onclick="jumpTo('pollsSection')">🗳️ Polls</button>
+        <button onclick="jumpTo('lostfoundSection')">🔎 Lost &amp; Found</button>
+        <button onclick="jumpTo('updatesSection')">📢 Updates</button>
+        <button onclick="jumpTo('featuresSection')">✨ Why Us</button>
+        <button onclick="openAbout()">ℹ️ About</button>
+      </div>
+    </div>
+
+    <!-- Features (editable by overseer) -->
+    <div class="card" id="featuresSection" style="margin-top:16px;">
+      <h2>✨ What Makes Usambara Special</h2>
+      <div id="featuresGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;"></div>
+    </div>
+
+    <!-- Hostel Guide / Info Hub (editable by overseer) -->
+    <div class="card" id="guideSection" style="margin-top:16px;">
+      <h2>📋 Hostel Guide — Key Info for Residents</h2>
+      <p class="hint" style="margin-top:-6px;">Everything you need day to day. If anything here is out of date, please tell the Overseer.</p>
+      <div id="infoHubGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;"></div>
+    </div>
+
+    <!-- Community boards: Events · Polls · Lost & Found (neat responsive grid) -->
+    <div class="sectionLabel"><span class="t">📌 Community Boards</span><span class="line"></span></div>
+    <div class="boardGrid">
+
+    <!-- EVENTS & IMPORTANT DATES (everyone can read; only Overseer can add) -->
+    <div class="card" id="eventsSection" style="margin-top:16px;">
+      <h2>📅 Upcoming Events &amp; Important Dates</h2>
+      <p class="hint" style="margin-top:-6px;">Maintenance, meetings, inspections and deadlines — so you always know what's coming.</p>
+
+      <!-- Overseer-only add-event form -->
+      <div id="eventForm" class="hidden" style="border:1px solid var(--line);border-radius:14px;padding:16px;background:#f7faf8;margin-bottom:16px;">
+        <div style="font-weight:800;color:var(--green-d);margin-bottom:10px;">➕ Add an event</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <div class="field" style="flex:2 1 200px;"><label>Title *</label>
+            <input id="evTitle" type="text" placeholder="e.g. Block 2 water tank cleaning"></div>
+          <div class="field" style="flex:1 1 150px;"><label>Date *</label>
+            <input id="evDate" type="date"></div>
+          <div class="field" style="flex:1 1 120px;"><label>Time (optional)</label>
+            <input id="evTime" type="time"></div>
+        </div>
+        <div class="field"><label>Details (optional)</label>
+          <textarea id="evBody" rows="2" placeholder="Any extra information residents should know..."></textarea></div>
+        <button class="btn gold" onclick="postEvent()">Add Event</button>
+        <span id="evStatus" class="hint" style="margin-left:10px;"></span>
+      </div>
+
+      <div id="eventsList"></div>
+      <div class="empty hidden" id="eventsEmpty">No upcoming events.</div>
+    </div>
+
+    <!-- POLLS / QUICK VOTES (everyone reads; students vote once; only Overseer creates/manages) -->
+    <div class="card" id="pollsSection" style="margin-top:16px;">
+      <h2>🗳️ Quick Poll</h2>
+      <p class="hint" style="margin-top:-6px;">Have your say — one vote per resident. Results update live.</p>
+
+      <!-- Overseer-only create-poll form -->
+      <div id="pollForm" class="hidden" style="border:1px solid var(--line);border-radius:14px;padding:16px;background:#f7faf8;margin-bottom:16px;">
+        <div style="font-weight:800;color:var(--green-d);margin-bottom:10px;">➕ Create a poll</div>
+        <div class="field"><label>Question *</label>
+          <input id="pollQ" type="text" maxlength="160" placeholder="e.g. Which day works best for the cleanup drive?"></div>
+        <div class="field"><label>Answer options * (2–6)</label>
+          <div id="pollOptions">
+            <input class="pollOpt" type="text" maxlength="80" placeholder="Option 1" style="margin-bottom:6px;">
+            <input class="pollOpt" type="text" maxlength="80" placeholder="Option 2" style="margin-bottom:6px;">
+          </div>
+          <button type="button" class="btn ghost sm" onclick="addPollOpt()">＋ Add option</button>
+        </div>
+        <button class="btn gold" onclick="postPoll()">Post Poll</button>
+        <span id="pollStatus" class="hint" style="margin-left:10px;"></span>
+      </div>
+
+      <div id="pollsList"></div>
+      <div class="empty hidden" id="pollsEmpty">No polls yet.</div>
+    </div>
+
+    <!-- LOST & FOUND (everyone can browse; only Overseer manages) -->
+    <div class="card" id="lostfoundSection" style="margin-top:16px;">
+      <h2>🔎 Lost &amp; Found</h2>
+      <p class="hint" style="margin-top:-6px;">Items found around the hostel. If something here is yours, tell the Overseer to claim it.</p>
+
+      <!-- Overseer-only add form -->
+      <div id="lfForm" class="hidden" style="border:1px solid var(--line);border-radius:14px;padding:16px;background:#f7faf8;margin-bottom:16px;">
+        <div style="font-weight:800;color:var(--green-d);margin-bottom:10px;">➕ Log a found item</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <div class="field" style="flex:2 1 200px;"><label>Item *</label>
+            <input id="lfTitle" type="text" maxlength="120" placeholder="e.g. Black wallet, blue Nokia charger"></div>
+          <div class="field" style="flex:1 1 150px;"><label>Category</label>
+            <select id="lfCategory">
+              <option>Electronics</option><option>ID / Cards</option><option>Keys</option>
+              <option>Clothing</option><option>Documents</option><option selected>Other</option>
+            </select></div>
+        </div>
+        <div class="field"><label>Where it was found</label>
+          <input id="lfFoundAt" type="text" maxlength="120" placeholder="e.g. Block 2 corridor, near the study room"></div>
+        <div class="field"><label>Details (optional)</label>
+          <textarea id="lfDetails" rows="2" maxlength="600" placeholder="Anything that helps the owner recognise it..."></textarea></div>
+        <button class="btn gold" onclick="postLostItem()">Add Item</button>
+        <span id="lfStatus" class="hint" style="margin-left:10px;"></span>
+      </div>
+
+      <div id="lostfoundList"></div>
+      <div class="empty hidden" id="lostfoundEmpty">No lost &amp; found items yet.</div>
+    </div>
+    </div><!-- /boardGrid -->
+
+    <!-- GROUP UPDATES / ANNOUNCEMENTS (everyone can read; only Overseer can post) -->
+    <div class="card" id="updatesSection" style="margin-top:16px;">
+      <h2>📢 Updates from the Overseer</h2>
+      <p class="hint" style="margin-top:-6px;">Announcements, notices and files shared with all residents.</p>
+
+      <!-- Overseer-only posting form -->
+      <div id="annForm" class="hidden" style="border:1px solid var(--line);border-radius:14px;padding:16px;background:#f7faf8;margin-bottom:16px;">
+        <div style="font-weight:800;color:var(--green-d);margin-bottom:10px;">✍️ Post a new update</div>
+        <div class="field"><label>Title (optional)</label>
+          <input id="annTitle" type="text" placeholder="e.g. Water Maintenance Notice"></div>
+        <div class="field"><label>Message</label>
+          <textarea id="annBody" rows="3" placeholder="Write your update to all residents... (tip: **bold**, *italic*, bullet lists with -, and links are auto-formatted)"></textarea></div>
+        <div class="field"><label>Attach files — images, video, audio, PDF, docs (up to 6 files, 4 MB each)</label>
+          <input id="annFile" type="file" multiple accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt,.xls,.xlsx,.csv,.ppt,.pptx,.zip" onchange="annFilesChanged()"></div>
+        <div id="annFileList" class="hint" style="margin-top:4px;"></div>
+        <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin:6px 0 12px;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:14px;">
+            <input id="annPin" type="checkbox"> 📌 Pin to top
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:14px;" title="Residents must tap Acknowledge; you'll see how many have.">
+            <input id="annImportant" type="checkbox"> ⚠️ Important — require acknowledgment
+          </label>
+        </div>
+        <button class="btn gold" onclick="postAnnouncement()">Publish Update</button>
+        <span id="annStatus" class="hint" style="margin-left:10px;"></span>
+      </div>
+
+      <div id="announcementsBoard"></div>
+      <div class="empty hidden" id="annEmpty">No updates yet.</div>
+    </div>
+
+    <!-- About the Overseer — opens as a popup via openAbout() -->
+    <div id="aboutModalBg" class="hidden" onclick="if(event.target===this)closeAbout()" style="position:fixed;inset:0;background:rgba(12,30,22,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:80;">
+      <div class="modal" id="aboutSection" style="background:#fff;border-radius:16px;max-width:860px;width:100%;max-height:90vh;overflow-y:auto;padding:24px;animation:popIn .35s ease;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px;">
+          <h2 style="margin:0;">👤 About Congressman Collins Unguku</h2>
+          <button class="btn ghost sm" onclick="closeAbout()" title="Close" style="flex:0 0 auto;">✕</button>
+        </div>
+      <div class="about-badge" style="display:flex;align-items:center;gap:10px;background:var(--green-l);border:1px solid #c9e5d4;border-radius:12px;padding:10px 14px;margin-bottom:18px;color:var(--green-d);font-size:13px;">
+        <span style="font-size:18px;">🛡️</span><b>Secure system:</b>&nbsp;Only the Overseer can add, edit or remove student records.
+      </div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;">
+        <div style="flex:1 1 420px;min-width:280px;">
+          <p style="margin-bottom:10px;">
+            <b>Congressman Collins Unguku</b> is the Overseer of <b>Usambara Male Hostels</b>,
+            responsible for the welfare, records and discipline of all students housed in
+            Blocks 2, 3, 4 and 5.
+          </p>
+          <p style="margin-bottom:10px;">
+            As Overseer, he keeps and updates every student's record, issues login PINs, and is
+            the direct point of contact for any problem or complaint a student may have during
+            their stay. He receives all reports and responds to students directly — including
+            through WhatsApp on <b>0769679217</b>.
+          </p>
+          <div class="who-box">
+            <div class="lbl">Role</div><div class="val">Overseer · Usambara Male Hostels</div>
+            <div class="lbl" style="margin-top:8px;">Contact</div><div class="val">WhatsApp 0769679217</div>
+            <div class="lbl" style="margin-top:8px;">Responsible for</div><div class="val">Blocks 2, 3, 4 &amp; 5</div>
+          </div>
+          <p style="font-size:13px;color:var(--muted);">
+            Have a problem? Sign in as a student and submit a report, or message the Overseer
+            directly on WhatsApp using the button below.
+          </p>
+          <button class="btn wa" style="margin-top:12px;" onclick="waContactOverseer()">💬 Report a Problem via WhatsApp</button>
+        </div>
+        <div style="flex:1 1 300px;min-width:220px;">
+          <img src="collins_poster_design2.png" alt="Congressman Collins Unguku" style="width:100%;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.08);">
+        </div>
+      </div>
+
+      <!-- More About Me -->
+      <div style="margin-top:22px;padding:20px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#fff,#fbfdfc);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <span style="font-size:24px;">✨</span>
+          <h2 style="color:var(--green-d);margin:0;">More About Me</h2>
+        </div>
+        <p style="margin-bottom:14px;font-size:15px;line-height:1.8;">
+          I was once exactly where you are — a student carrying my own bucket to the water point,
+          studying by torchlight when the power went out, and walking these same corridors. I have
+          lived the highs and the lows of hostel life. That is why I do not just manage these
+          blocks — I feel them. Every report you send is not paperwork to me; it is a promise I
+          made to you the day I took this role.
+        </p>
+        <p style="margin-bottom:14px;font-size:15px;line-height:1.8;">
+          I believe that a hostel is not bricks and bunk beds — it is a family. When your water
+          runs dry, when your light goes out, when you feel unsafe or unheard — that is a broken
+          promise to a comrade, and I take broken promises personally. I built this very system so
+          that your voice reaches me instantly, because silence is the enemy of change.
+        </p>
+        <p style="font-size:15px;line-height:1.8;">
+          What drives me is simple: I refuse to watch a comrade suffer in silence when a small act
+          of care could change their whole day. Whether it is fixing a lock at midnight, listening
+          without judging, or standing up for what is fair — I show up. That is not a slogan for
+          me; it is a lifestyle. I lead from the front, not from the office.
+        </p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;">
+          <div style="flex:1;min-width:150px;text-align:center;background:var(--green-l);border-radius:12px;padding:14px;">
+            <div style="font-size:22px;font-weight:800;color:var(--green-d);">Blocks 2–5</div>
+            <div style="font-size:12px;color:var(--muted);">Under my care</div>
+          </div>
+          <div style="flex:1;min-width:150px;text-align:center;background:var(--green-l);border-radius:12px;padding:14px;">
+            <div style="font-size:22px;font-weight:800;color:var(--green-d);">24/7</div>
+            <div style="font-size:12px;color:var(--muted);">Your voice reaches me</div>
+          </div>
+          <div style="flex:1;min-width:150px;text-align:center;background:var(--green-l);border-radius:12px;padding:14px;">
+            <div style="font-size:22px;font-weight:800;color:var(--green-d);">0769679217</div>
+            <div style="font-size:12px;color:var(--muted);">WhatsApp contact</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message to the Comrades (with campaign points + photo) -->
+      <div class="article-card" style="margin-top:18px;padding:0;background:linear-gradient(135deg,var(--green-d),var(--green));color:#fff;">
+        <div style="display:flex;flex-wrap:wrap;">
+          <div style="flex:0 0 170px;min-width:120px;max-width:220px;">
+            <img src="collins_poster_design2.png" alt="Congressman Collins Unguku" style="width:100%;height:100%;object-fit:cover;display:block;">
+          </div>
+          <div style="flex:1 1 300px;padding:26px 24px;">
+            <div style="font-size:13px;font-weight:800;letter-spacing:1.5px;opacity:.85;text-transform:uppercase;">A personal letter</div>
+            <h2 style="color:#fff;margin-top:6px;font-size:22px;">🎤 A Message to My Comrades</h2>
+            <p class="banner-quote">
+              "Comrade, listen. Change does not fall from the sky — it is built by people who
+              refuse to stay silent. I am asking you today: stand with me, and together we will
+              turn every complaint into a solution."
+            </p>
+          </div>
+        </div>
+        <div style="padding:0 24px 24px;">
+          <p style="font-size:15.5px;line-height:1.7;">
+            Too long, good people have waited quietly in the shadows of these blocks while others
+            decided their fate. You have the power that no leader can take from you — the power to
+            choose. So ask yourself honestly: <b>Do you want things to change, or do you want to
+            keep explaining why they never do?</b>
+          </p>
+          <p style="font-size:15.5px;line-height:1.7;margin-top:12px;">
+            I did not come to sit and watch. I came to serve, to listen, and to deliver. I have a
+            clear plan for our blocks, and I will fight for it:
+          </p>
+          <div style="margin:14px 0 4px;background:rgba(255,255,255,.12);border-radius:12px;padding:16px;">
+            <div style="font-size:14px;font-weight:800;letter-spacing:.5px;margin-bottom:8px;">📦 MY PROMISE TO THE COMRADES — FOR DELIVERY</div>
+            <ul style="list-style:none;padding:0;font-size:14.5px;line-height:1.9;">
+              <li>💧 <b>Clean, running water</b> — no more queuing with buckets at dawn.</li>
+              <li>💡 <b>Reliable electricity</b> — lights that stay on when you need them most.</li>
+              <li>🔒 <b>24/7 security</b> — a hostel where you feel safe to sleep.</li>
+              <li>🛏️ <b>Dignified rooms</b> — working locks, sturdy beds, clean common areas.</li>
+              <li>🚫 <b>Zero theft tolerance</b> — your belongings are safe; theft is dealt with firmly and swiftly.</li>
+              <li>⚡ <b>Quick help on problem reporting</b> — the moment you report, action begins immediately.</li>
+              <li>🗣️ <b>Your voice heard</b> — every complaint answered within 24 hours.</li>
+              <li>🤝 <b>A warden who walks with you</b>, not above you.</li>
+            </ul>
+          </div>
+          <p style="font-size:15.5px;line-height:1.7;margin-top:12px;">
+            But I cannot do it alone — great things are built by many hands pulling one rope. Your
+            vote is not just a mark on paper; it is a decision about the life you want to wake up
+            to. Stand with me, and together we will not just ask for change — <b>we will become
+            it.</b>
+          </p>
+          <div style="margin-top:16px;text-align:center;font-size:19px;font-weight:800;letter-spacing:.5px;">
+            🗳️ Vote Collins Unguku — because the change you've been waiting for is YOU.
+          </div>
+          <div style="margin-top:8px;text-align:center;font-size:15px;font-style:italic;opacity:.95;">
+            “Unguku ni moto — together we rise, together we change.”
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- Posters gallery -->
+    <div class="card" style="margin-top:16px;">
+      <h2>🖼️ The Hostel at a Glance</h2>
+      <div style="display:flex;gap:18px;flex-wrap:wrap;justify-content:center;">
+        <img src="collins_poster_design4.png" alt="Poster 1" style="height:340px;max-width:100%;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.08);">
+        <img src="collins_poster_design2.png" alt="Poster 2" style="height:340px;max-width:100%;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.08);">
+        <img src="collins_poster_design3.png" alt="Poster 3" style="height:340px;max-width:100%;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.08);">
+      </div>
+    </div>
+
+    <!-- Usambara Hostels photo gallery — real photos only -->
+    <div class="card" style="margin-top:16px;" id="gallerySection">
+      <h2>📷 Usambara Hostels — Photo Gallery</h2>
+      <p class="hint" style="margin-top:0;">Real photos from around our home — Blocks 1, 2, 3 &amp; 4, the covered corridors, the compound, washing day and the notice board. Usambara Male Hostels, Kenyatta University.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:12px;">
+        <img src="usambara_01.jpg" alt="Usambara Block 3 name sign" loading="lazy" style="width:100%;height:190px;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.1);">
+        <img src="usambara_02.jpg" alt="Usambara Block 3 entrance with a resident" loading="lazy" style="width:100%;height:190px;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.1);">
+        <img src="usambara_03.jpg" alt="Usambara hostel building behind the hedge fence" loading="lazy" style="width:100%;height:190px;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.1);">
+        <img src="usambara_04.jpg" alt="Old Usambara Hostel sign on the stone gable" loading="lazy" style="width:100%;height:190px;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.1);">
+        <img src="usambara_05.jpg" alt="Usambara Hostel 4 stone gable" loading="lazy" style="width:100%;height:190px;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.1);">
+        <img src="usambara_06.jpg" alt="Hostel gate, walkway and notice board" loading="lazy" style="width:100%;height:190px;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.1);">
+        <img src="usambara_07.jpg" alt="Covered corridor with blue pillars and visitors bay" loading="lazy" style="width:100%;height:190px;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.1);">
+        <img src="usambara_08.jpg" alt="Usambara hostels compound and blocks" loading="lazy" style="width:100%;height:190px;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.1);">
+        <img src="usambara_09.jpg" alt="Usambara block with blue gate on washing day" loading="lazy" style="width:100%;height:190px;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.1);">
+        <img src="usambara_10.jpg" alt="Walkway beside Usambara Block 2" loading="lazy" style="width:100%;height:190px;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.1);">
+        <img src="usambara_11.jpg" alt="Laundry lines under the mango tree" loading="lazy" style="width:100%;height:190px;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.1);">
+        <img src="usambara_12.jpg" alt="Usambara Block 1 stone gable" loading="lazy" style="width:100%;height:190px;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.1);">
+        <img src="usambara_13.jpg" alt="Interior corridor with breeze-block wall" loading="lazy" style="width:100%;height:190px;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.1);">
+        <img src="usambara_14.jpg" alt="Notice board, suggestion box and housekeeper's office" loading="lazy" style="width:100%;height:190px;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.1);">
+      </div>
+    </div>
+
+    <!-- Front / Back page navigation -->
+    <div class="card" style="margin-top:16px;text-align:center;">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:10px;">Explore the pages</div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆️ Back to Top</button>
+        <button class="btn gold" onclick="openAbout()">📄 Front Page</button>
+        <button class="btn ghost" onclick="document.getElementById('gallerySection').scrollIntoView({behavior:'smooth'})">📷 Back Page</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGIN -->
+  <section id="loginView" class="hidden">
+    <div class="card login-card">
+      <h2>🔐 Sign In</h2>
+      <div class="tabs">
+        <div class="tab active" id="tabOverseer" onclick="pickLogin('overseer')">Overseer</div>
+        <div class="tab" id="tabStudent" onclick="pickLogin('student')">Student</div>
+      </div>
+      <!-- overseer login -->
+      <form id="loginOverseerForm">
+        <div class="field"><label>Overseer Password</label>
+          <input type="password" id="ovPassword" placeholder="Enter overseer password" required></div>
+        <button type="submit" class="btn" style="width:100%;margin-top:16px;">Log in as Overseer</button>
+      </form>
+      <!-- student login -->
+      <form id="loginStudentForm" class="hidden">
+        <div class="field"><label>Reg / Admission No.</label>
+          <input type="text" id="stReg" placeholder="e.g. SU/2023/0456" required></div>
+        <div class="field"><label>PIN</label>
+          <input type="password" id="stPin" placeholder="Your PIN (issued by the overseer)" required></div>
+        <button type="submit" class="btn" style="width:100%;margin-top:16px;">Log in as Student</button>
+      </form>
+      <div class="error hidden" id="loginError"></div>
+      <div class="hint">Students: your PIN is issued by the overseer (Congressman Collins Unguku). Students can only view their own record and submit reports.</div>
+    </div>
+  </section>
+
+  <!-- STUDENT DASHBOARD -->
+  <section id="studentView" class="hidden">
+    <div class="welcome" id="stuWelcome"></div>
+
+    <!-- total residents (count only — no other students' details) -->
+    <div class="card" style="margin-bottom:16px;display:flex;align-items:center;gap:14px;background:linear-gradient(180deg,#fff,#f7faf8);">
+      <div style="font-size:34px;">🏠</div>
+      <div>
+        <div style="font-size:26px;font-weight:800;color:var(--green-d);" id="stuResidentCount">—</div>
+        <div class="hint" style="margin:0;">residents currently registered at Usambara Male Hostels</div>
+      </div>
+    </div>
+
+    <!-- rate-us nudge (shown after interacting with the system) -->
+    <div id="stuRateNudge" class="card hidden" style="margin-bottom:16px;border:1px solid #ffe6a7;background:linear-gradient(180deg,#fffdf5,#fff8e6);display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <span style="font-size:26px;">⭐</span>
+      <div style="flex:1 1 220px;">
+        <b>Enjoying the system?</b>
+        <div class="hint" style="margin:0;">Take a second to rate Usambara Male Hostels — it helps the Overseer serve you better.</div>
+      </div>
+      <button class="btn gold sm" onclick="goRateNow()">Rate Now</button>
+      <button class="btn ghost sm" onclick="dismissRateNudge()">Later</button>
+    </div>
+
+    <!-- own record -->
+    <div class="card" style="margin-bottom:16px;">
+      <h2>My Record</h2>
+      <div class="grid" id="stuRecord"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+        <button class="btn ghost sm" onclick="downloadMyInfo()">📄 Download My Info</button>
+        <button class="btn ghost sm" onclick="printMyInfo()">🖨️ Print / Save as PDF</button>
+      </div>
+      <div class="hint" style="margin-top:10px;">This is read-only. You can only see and download <b>your own</b> details — never anyone else's. To change anything, contact the Overseer on WhatsApp.</div>
+    </div>
+
+    <!-- submit report -->
+    <div class="card" style="margin-bottom:16px;">
+      <h2>📢 Report a Problem to Congressman Collins Unguku</h2>
+      <form id="studentReportForm">
+        <div class="field"><label>Problem / Complaint *</label>
+          <textarea id="stuMsg" rows="3" required placeholder="Describe the issue, e.g. broken water pipe, electricity outage, leaking roof..."></textarea></div>
+        <div class="field"><label>Urgency</label>
+          <select id="stuUrg"><option value="Normal">Normal</option><option value="Urgent">🔴 Urgent</option><option value="Emergency">🚨 Emergency</option></select></div>
+        <div class="field"><label>📷 Attach a photo or PDF (optional — up to 4 MB)</label>
+          <input id="stuReportFile" type="file" accept="image/*,.pdf">
+          <div class="hint">A picture of the problem helps the Overseer fix it faster.</div></div>
+        <button type="submit" class="btn gold" style="margin-top:12px;">Submit Report</button>
+      </form>
+      <button class="btn wa sm" style="margin-top:14px;" onclick="waContactOverseer()">💬 Also message the Overseer on WhatsApp</button>
+    </div>
+
+    <!-- my reports -->
+    <div class="card">
+      <h2>My Submitted Reports</h2>
+      <div id="stuReportsList"></div>
+      <div class="empty hidden" id="stuReportsEmpty">You have not submitted any reports yet.</div>
+    </div>
+  </section>
+
+  <!-- OVERSEER: RECORDS -->
+  <section id="recordsView" class="hidden">
+    <!-- Occupancy dashboard -->
+    <div class="card" style="margin-bottom:16px;">
+      <h2>📊 Occupancy Dashboard</h2>
+      <div id="occupancyGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;"></div>
+      <div id="roomTypeBreakdown" style="margin-top:16px;"></div>
+    </div>
+    <div class="card">
+      <div class="toolbar" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
+        <button class="btn gold sm" onclick="openAdd()">＋ Add Student</button>
+        <button class="btn ghost sm" onclick="backup()">💾 Backup</button>
+        <button class="btn ghost sm" onclick="restoreBackup()">📂 Restore Backup</button>
+        <button class="btn ghost sm" onclick="exportCSV()">📄 Export CSV</button>
+        <input type="file" id="restoreFile" class="hidden" accept=".json" onchange="handleRestoreFile(this)">
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
+        <input type="text" id="searchBox" placeholder="🔍 Search name, reg, room, phone..." oninput="renderRecords()" style="max-width:320px;">
+        <select id="filterBlock" onchange="renderRecords()" style="max-width:160px;">
+          <option value="">All blocks</option><option value="2">Block 2</option><option value="3">Block 3</option>
+          <option value="4">Block 4</option><option value="5">Block 5</option>
+        </select>
+      </div>
+      <h2>Student Records</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Name</th><th>Reg No.</th><th>Block</th><th>Room</th><th>Room Type</th><th>Phone</th><th>Guardian</th><th>PIN</th><th>Actions</th></tr></thead>
+        <tbody id="recordsBody"></tbody>
+      </table></div>
+      <div class="empty hidden" id="recordsEmpty">No students found.</div>
+    </div>
+
+    <!-- Data safety / automatic backups (overseer only) -->
+    <div class="card" style="margin-top:16px;">
+      <h2>🛡️ Data Safety &amp; Automatic Backups</h2>
+      <p class="hint" style="margin-top:-6px;">A snapshot is saved automatically every 6 hours (the newest 14 are kept), so data can be recovered even after an accidental delete. You can also back up now or restore a snapshot below.</p>
+      <div id="backupStatus" class="hint" style="margin:10px 0;">Loading backup status…</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+        <button class="btn gold sm" onclick="snapshotNow()">📸 Back Up Now</button>
+        <button class="btn ghost sm" onclick="loadSnapshots()">🔄 Refresh</button>
+      </div>
+      <div id="snapshotsList"></div>
+      <div class="empty hidden" id="snapshotsEmpty">No snapshots yet — they are created automatically.</div>
+    </div>
+
+    <!-- Automated email reports (overseer only) -->
+    <div class="card" style="margin-top:16px;">
+      <h2>📧 Automated Email Reports</h2>
+      <p class="hint" style="margin-top:-6px;">The system compiles a full update — residents, reports, acknowledgments, polls, events, lost &amp; found — and emails it to you automatically on your schedule. Sends through your own Gmail (app password); nothing else ever leaves the system.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px;">
+        <div class="field"><label>Send reports to</label><input id="emTo" type="email" value="leadex44@gmail.com"></div>
+        <div class="field"><label>Frequency</label>
+          <select id="emSchedule" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fff;">
+            <option value="daily">Daily</option><option value="weekly">Weekly</option>
+          </select></div>
+        <div class="field"><label>Send at (hour of day)</label>
+          <select id="emHour" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fff;"></select></div>
+      </div>
+      <div style="border-top:1px solid var(--line);margin:14px 0 12px;padding-top:12px;">
+        <div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:8px;">Gmail connection (SMTP)</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+          <div class="field"><label>SMTP server</label><input id="emHost" type="text" placeholder="smtp.gmail.com"></div>
+          <div class="field"><label>Port</label><input id="emPort" type="number" value="587"></div>
+          <div class="field"><label>Your Gmail address</label><input id="emUser" type="email" placeholder="yourname@gmail.com"></div>
+          <div class="field"><label>Gmail app password</label><input id="emPass" type="password" placeholder="16-letter app password" autocomplete="new-password"></div>
+        </div>
+        <div class="hint" style="margin:6px 0 0;">Get an app password: Google Account → Security → 2-Step Verification → App passwords → create one for “Mail”. The password is stored only inside your private database and is never shown on the public site.</div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;margin:8px 0 12px;">
+        <input id="emEnabled" type="checkbox"> Enable automated email reports
+      </label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        <button class="btn gold sm" onclick="saveEmailConfig()">💾 Save email settings</button>
+        <button class="btn ghost sm" onclick="testEmailNow()">✉️ Send test email</button>
+        <span id="emStatus" class="hint" style="margin-left:auto;"></span>
+      </div>
+      <div id="emLast" class="hint" style="margin-top:8px;"></div>
+    </div>
+
+    <!-- Security centre (overseer only) -->
+    <div class="card" style="margin-top:16px;">
+      <h2>🛡️ Security Centre</h2>
+      <p class="hint" style="margin-top:-6px;">A live view of the protections guarding this system right now.</p>
+      <div id="securityGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px;"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
+        <button class="btn danger sm" onclick="revokeSessions()">🔒 Sign out all other devices</button>
+        <button class="btn ghost sm" onclick="loadSecurity()">🔄 Refresh</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- OVERSEER: REPORTS -->
+  <section id="reportsView" class="hidden">
+    <!-- Report insights (overseer analytics over existing reports) -->
+    <div class="card" style="margin-bottom:16px;">
+      <h2>📈 Report Insights</h2>
+      <p class="hint" style="margin-top:-6px;">A quick read on maintenance patterns and how fast issues get resolved.</p>
+      <div id="insightsGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-top:12px;"></div>
+      <div id="insightsBreakdown" style="margin-top:16px;"></div>
+    </div>
+    <div class="card">
+      <h2>📋 Problem Log — Congressman Collins Unguku</h2>
+      <div id="reportsList"></div>
+      <div class="empty hidden" id="reportsEmpty">No reports yet.</div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="reviewsView" class="hidden">
+    <div class="grid">
+      <!-- submit review -->
+      <div class="card">
+        <h2>⭐ Rate Usambara Male Hostels</h2>
+        <div class="field"><label>Your Star Rating</label>
+          <div id="starInput" style="font-size:34px;cursor:pointer;letter-spacing:6px;color:#d8a500;line-height:1.2;">
+            <span onclick="setRating(1)">☆</span><span onclick="setRating(2)">☆</span><span onclick="setRating(3)">☆</span><span onclick="setRating(4)">☆</span><span onclick="setRating(5)">☆</span>
+          </div>
+          <div class="hint" id="ratingLabel">Select 1–5 stars</div>
+        </div>
+        <div class="field"><label>Your Comment</label>
+          <textarea id="revComment" rows="3" placeholder="Share your experience at the hostel..."></textarea></div>
+        <button class="btn gold" style="margin-top:12px;" onclick="submitReview()">Submit Review</button>
+        <div class="error hidden" id="revError" style="margin-top:10px;"></div>
+      </div>
+
+      <!-- list of reviews -->
+      <div class="card">
+        <h2>Student Reviews</h2>
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;padding:12px;background:#f7faf8;border:1px solid var(--line);border-radius:12px;">
+          <div style="font-size:38px;font-weight:800;color:var(--green-d);" id="avgRating">–</div>
+          <div>
+            <div id="avgStars" style="color:#d8a500;font-size:20px;letter-spacing:3px;">☆☆☆☆☆</div>
+            <div class="hint" style="margin:0;" id="avgCount">based on 0 reviews</div>
+          </div>
+        </div>
+        <div id="reviewsList"></div>
+        <div class="empty hidden" id="reviewsEmpty">No reviews yet. Be the first to review!</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OVERSEER: SETTINGS -->
+  <section id="settingsView" class="hidden">
+    <!-- Site content & page photo -->
+    <div class="card" style="max-width:720px;margin-bottom:16px;">
+      <h2>🖼️ Page Photo &amp; Features</h2>
+      <p class="hint" style="margin-top:0;">Change the main page photo and the feature cards shown on the Home page. These are saved permanently.</p>
+      <form id="siteForm">
+        <div class="field"><label>Page Title</label><input type="text" id="setTitle"></div>
+        <div class="field"><label>Tagline</label><input type="text" id="setTagline"></div>
+        <div class="field"><label>Page Photo (select an image)</label>
+          <select id="setPhoto"></select></div>
+        <div style="margin-top:14px;">
+          <div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px;">Feature cards (icon, title, text)</div>
+          <div id="featuresEditor"></div>
+        </div>
+        <div style="margin-top:18px;">
+          <div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:2px;">📋 Hostel Guide items (shown to everyone on Home)</div>
+          <div class="hint" style="margin:0 0 6px;">Key info residents need — WiFi, meals, quiet hours, rules, emergency contacts. Details can span multiple lines.</div>
+          <div id="infoHubEditor"></div>
+        </div>
+        <div style="margin-top:18px;border-top:1px solid var(--line);padding-top:14px;">
+          <div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px;">📣 Urgent notice banner (shown at the top of EVERY page)</div>
+          <label style="display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:8px;">
+            <input type="checkbox" id="noticeOn"> Show the urgent notice banner now
+          </label>
+          <input type="text" id="noticeText" maxlength="300" placeholder="e.g. ⚠️ Water will be off today 2–4pm for maintenance">
+          <div class="hint" style="margin-top:4px;">Use this for time-sensitive alerts everyone must see. Untick the box (or clear the text) to hide it.</div>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:10px;">
+          <button type="submit" class="btn gold">💾 Save Page Content</button>
+          <button type="button" class="btn ghost" onclick="loadSettings()">↻ Reload</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Appearance: colours + layout (overseer control) -->
+    <div class="card" style="max-width:720px;margin-bottom:16px;">
+      <h2>🎨 Appearance &amp; Layout</h2>
+      <p class="hint" style="margin-top:0;">Change the site's colours and layout. Changes save and apply instantly — visible to everyone.</p>
+      <form id="themeForm">
+        <div class="field"><label>Colour Theme</label>
+          <div id="palettePicker" style="display:flex;gap:8px;flex-wrap:wrap;"></div></div>
+        <div class="field"><label>Main / Brand Colour</label>
+          <input type="color" id="thPrimary" value="#0e7a4d" style="max-width:90px;height:40px;padding:2px;"></div>
+        <div class="field"><label>Accent Colour (buttons / highlights)</label>
+          <input type="color" id="thAccent" value="#c9a227" style="max-width:90px;height:40px;padding:2px;"></div>
+        <div class="grid">
+          <div class="field"><label>Background</label>
+            <select id="thBg">
+              <option value="gradient">🌿 Rich gradient (animated)</option>
+              <option value="light">☀️ Light &amp; clean</option>
+            </select></div>
+          <div class="field"><label>Card Style</label>
+            <select id="thLayout">
+              <option value="modern">Modern (soft shadows)</option>
+              <option value="classic">Classic (bordered)</option>
+            </select></div>
+          <div class="field"><label>Font</label>
+            <select id="thFont">
+              <option value="system">Clean (system)</option>
+              <option value="serif">Elegant (serif)</option>
+            </select></div>
+          <div class="field"><label>Corner Roundness</label>
+            <select id="thRadius">
+              <option value="4">Sharp</option>
+              <option value="10">Soft</option>
+              <option value="16">Rounded</option>
+              <option value="22">Very rounded</option>
+            </select></div>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:10px;">
+          <button type="submit" class="btn gold">💾 Save Appearance</button>
+          <button type="button" class="btn ghost" onclick="loadTheme(true)">↻ Reset to saved</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Collo AI assistant (knowledge base) -->
+    <div class="card" style="max-width:720px;margin-bottom:16px;">
+      <h2>🤖 Collo AI Assistant</h2>
+      <p class="hint" style="margin-top:0;">Collo AI chats with students &amp; visitors and answers their questions. Train it here: add questions with the answers it should give. Saved permanently.</p>
+      <div class="field"><label>Assistant name</label><input type="text" id="caName" value="Collo AI"></div>
+      <div class="field"><label>Who can use Collo AI?</label>
+        <select id="caVis">
+          <option value="overseer">🔐 Only the Overseer (logged in)</option>
+          <option value="everyone">🌍 Everyone (visitors &amp; students too)</option>
+          <option value="off">🚫 Hide Collo AI (off)</option>
+        </select>
+        <div class="hint">By default the bot shows only to you (the Overseer). Choose "Everyone" to also let students and visitors chat, or "off" to hide it.</div></div>
+      <div class="field"><label>Greeting message (shown when a chat opens)</label>
+        <textarea id="caGreet" rows="2">Hi comrade! 👋 I'm Collo AI, your hostel assistant. Ask me about reporting problems, the Overseer, rooms, or how to sign in.</textarea></div>
+      <div class="field"><label>Question &amp; answer pairs Collo AI knows</label>
+        <div id="caFaqList"></div>
+        <button type="button" class="btn ghost sm" style="margin-top:6px;" onclick="caAddFaq()">＋ Add a question</button>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:10px;">
+        <button type="button" class="btn gold" onclick="caSave()">💾 Save Collo AI</button>
+        <button type="button" class="btn ghost" onclick="loadChatbot(true)">↻ Reset</button>
+        <button type="button" class="btn ghost" onclick="caSeed()">✨ Add default questions</button>
+      </div>
+    </div>
+
+    <!-- Collo AI real brain (optional Gemini) -->
+    <div class="card" style="max-width:720px;margin-bottom:16px;">
+      <h2>🧠 Collo AI — Real AI Brain (Optional)</h2>
+      <p class="hint" style="margin-top:0;">Collo AI works with its built-in knowledge for free. To make it answer <b>any question naturally &amp; accurately</b>, connect a <b>free</b> AI key — either <b>Groq</b> (fast, free, Llama 3.3) or <b>Google Gemini</b>. Your key is stored <b>securely on the server only</b> — never in the browser or on GitHub.</p>
+      <div id="aiStatus" class="who-box" style="margin:0 0 14px;"><div class="lbl">AI status</div><div class="val">Checking…</div></div>
+      <div class="field"><label>AI API key (Groq <span style="color:var(--muted);">gsk_…</span> or Gemini <span style="color:var(--muted);">AIza…</span>)</label>
+        <input type="password" id="gemKey" placeholder="Paste gsk_... (Groq) or AIza... (Gemini) key" autocomplete="off" style="font-family:monospace;">
+        <div class="hint">
+          <b>Groq (recommended, free &amp; fast):</b> console.groq.com/keys → Create API Key → paste the <b>gsk_…</b> key.<br>
+          <b>Gemini (free):</b> aistudio.google.com/app/apikey → Create key → paste the <b>AIza…</b> key.<br>
+          The system detects which provider your key belongs to automatically.
+        </div></div>
+      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+        <button type="button" class="btn gold" onclick="aiSaveKey()">🔑 Save &amp; Connect AI</button>
+        <button type="button" class="btn ghost" onclick="aiClearKey()">✖ Disconnect / Remove</button>
+      </div>
+    </div>
+
+    <!-- Database & storage (permanent data) -->
+    <div class="card" style="max-width:720px;margin-bottom:16px;">
+      <h2>🗄️ Database &amp; Storage</h2>
+      <div id="storageStatus" style="margin-bottom:14px;font-size:14px;"></div>
+      <form id="dbForm">
+        <div class="field"><label>MongoDB Connection String (optional)</label>
+          <input type="text" id="dbUri" placeholder="mongodb+srv://user:pass@cluster..." autocomplete="off"></div>
+        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+          <button type="submit" class="btn">💾 Save &amp; Connect Database</button>
+          <button type="button" class="btn ghost" onclick="testDbConnection()">🔌 Test Connection</button>
+        </div>
+      </form>
+      <div id="dbTestResult" class="hidden" style="margin-top:12px;padding:10px 12px;border-radius:8px;font-size:13px;"></div>
+      <div class="hint" style="margin-top:10px;">
+        To keep your data <b>permanently (never lost on restart/redeploy)</b>, create a free MongoDB Atlas
+        cluster and paste its connection string here. Leave blank to use local storage. Existing data is
+        automatically carried over when you switch. You'll also get an alert here and by WhatsApp when your
+        data gets large.
+      </div>
+    </div>
+
+    <div class="card" style="max-width:520px;">
+      <h2>⚙️ Overseer Password</h2>
+      <form id="changePassForm">
+        <div class="field"><label>Current Password</label><input type="password" id="curPass" required></div>
+        <div class="field"><label>New Password</label><input type="password" id="newPass" required></div>
+        <button type="submit" class="btn">Change Overseer Password</button>
+      </form>
+      <div class="hint" style="margin-top:16px;">Students are given their PIN by you when you add them. You can reset a student's PIN from the Records tab.</div>
+    </div>
+  </section>
+
+  <!-- STUDENT ADD/EDIT MODAL -->
+  <div id="modalBg" class="hidden" style="position:fixed;inset:0;background:rgba(12,30,22,.5);align-items:center;justify-content:center;padding:16px;z-index:60;">
+    <div class="modal" style="background:#fff;border-radius:14px;max-width:540px;width:100%;padding:22px;">
+      <h3 id="modalTitle" style="color:var(--green-d);margin-bottom:14px;">Add Student</h3>
+      <form id="studentForm">
+        <div class="grid">
+          <div class="field"><label>Full Name *</label><input type="text" id="fName" required></div>
+          <div class="field"><label>Reg / Adm No. *</label><input type="text" id="fReg" required></div>
+          <div class="field"><label>Block *</label>
+            <select id="fBlock" required><option value="">Select</option><option value="2">Block 2</option><option value="3">Block 3</option><option value="4">Block 4</option><option value="5">Block 5</option></select></div>
+          <div class="field"><label>Room *</label><input type="text" id="fRoom" required></div>
+          <div class="field"><label>Room Type</label>
+            <select id="fRoomType"><option value="">Select</option><option value="Single">Single</option><option value="Double">Double</option><option value="Quad">Quad</option><option value="Hexagon">Hexagon</option><option value="Others">Others</option></select></div>
+          <div class="field"><label>Phone</label><input type="tel" id="fPhone"></div>
+          <div class="field"><label>Guardian Name</label><input type="text" id="fGuardian"></div>
+        </div>
+        <div class="field"><label>Guardian Phone</label><input type="tel" id="fGuardianPhone"></div>
+        <div class="field"><label>PIN (4+ digits) *</label>
+          <input type="password" id="fPin" required placeholder="Set the student's login PIN"><br>
+          <span class="hint">Leave the PIN field blank when editing a student to keep the current PIN.</span></div>
+        <div style="margin-top:16px;display:flex;gap:10px;">
+          <button type="submit" class="btn" id="submitBtn">Save</button>
+          <button type="button" class="btn ghost" onclick="closeModal()">Cancel</button>
+          <button type="button" class="btn danger" id="deleteBtn" style="margin-left:auto;" onclick="delStudent()">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</main>
+
+<footer class="wrap">Usambara Male Hostels · Blocks 2, 3, 4 &amp; 5 · Overseer: Congressman Collins Unguku<br>© 2026 All Rights Reserved · Chahiru Collins Unguku™</footer>
+<div id="toast" class="toast"></div>
+
+<!-- Floating WhatsApp button -->
+<div onclick="waContactOverseer()" title="Report via WhatsApp"
+  style="position:fixed;bottom:22px;right:22px;width:58px;height:58px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 6px 20px rgba(0,0,0,.3);cursor:pointer;z-index:70;transition:transform .2s ease,box-shadow .2s ease;">
+  💬</div>
+
+<!-- Collo AI floating launcher + window -->
+<div id="colloFab" onclick="colloToggle()" title="Chat with Collo AI">🤖<span class="dot"></span></div>
+<div id="colloLaunchHint" class="collo-launch-hint">💬 Chat with <b>Collo AI</b> — ask me anything</div>
+<div id="colloWindow" class="hidden">
+  <div class="cw-head">
+    <div class="cw-ava">🤖</div>
+    <div>
+      <b>Collo AI</b>
+      <div class="cw-online">online · Usambara Male Hostels assistant</div>
+    </div>
+    <button class="cw-close" onclick="colloToggle()" title="Close">×</button>
+  </div>
+  <div id="colloMsgs"></div>
+  <div id="colloChips"></div>
+  <div class="cw-in">
+    <input id="colloInput" type="text" placeholder="Type your question…" autocomplete="off">
+    <button class="cw-send" onclick="colloSend()" title="Send">➤</button>
+  </div>
+</div>
+
+<!-- WhatsApp Problem-Type Selector -->
+<div id="waModalBg" class="hidden" style="position:fixed;inset:0;background:rgba(12,30,22,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:80;">
+  <div class="modal" style="background:#fff;border-radius:16px;max-width:440px;width:100%;padding:24px;animation:popIn .35s ease;">
+    <h3 style="color:var(--green-d);margin-bottom:4px;">💬 Report via WhatsApp</h3>
+    <p class="hint" style="margin-top:0;margin-bottom:14px;">Select the type of problem you're facing. You'll be taken to WhatsApp with a ready message.</p>
+    <div id="waTypeList" style="display:flex;flex-direction:column;gap:8px;"></div>
+    <button class="btn ghost" style="width:100%;margin-top:14px;" onclick="closeWaModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- Edit Group Update (Overseer) -->
+<div id="annEditBg" class="hidden" onclick="if(event.target===this)closeAnnEdit()" style="position:fixed;inset:0;background:rgba(12,30,22,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:80;">
+  <div class="modal" style="background:#fff;border-radius:16px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;padding:24px;animation:popIn .35s ease;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px;">
+      <h3 style="color:var(--green-d);margin:0;">✏️ Edit Update</h3>
+      <button class="btn ghost sm" onclick="closeAnnEdit()" title="Close">✕</button>
+    </div>
+    <p class="hint" style="margin-top:0;margin-bottom:12px;">Update the title, message or attachments. Residents will see an “edited” note.</p>
+    <input type="hidden" id="annEditId">
+    <div class="field"><label>Title (optional)</label>
+      <input id="annEditTitle" type="text" maxlength="200" placeholder="e.g. Water supply notice"></div>
+    <div class="field"><label>Message</label>
+      <textarea id="annEditBody" rows="4" placeholder="Write your update..."></textarea></div>
+    <div id="annEditCurrent" class="hint" style="margin:2px 0 10px;"></div>
+    <div class="field"><label>Replace attachments (optional)</label>
+      <input id="annEditFile" type="file" multiple accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt,.xls,.xlsx,.csv,.ppt,.pptx,.zip" onchange="annEditFilesChanged()">
+      <div id="annEditFileList" class="hint" style="margin-top:4px;"></div>
+      <div class="hint" style="margin-top:2px;">Leave empty to keep the current attachments. Up to 6 files, 4 MB each.</div></div>
+    <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin:6px 0 14px;">
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;">
+        <input id="annEditPin" type="checkbox"> 📌 Pin to top
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;" title="Residents must tap Acknowledge; you'll see how many have.">
+        <input id="annEditImportant" type="checkbox"> ⚠️ Important — require acknowledgment
+      </label>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <button class="btn" onclick="saveAnnEdit()">Save Changes</button>
+      <button class="btn ghost" onclick="closeAnnEdit()">Cancel</button>
+      <span id="annEditStatus" class="hint" style="margin-left:auto;"></span>
+    </div>
+  </div>
+</div>
+
+<!-- Photo lightbox — click any gallery photo for a smooth full-screen view -->
+<div id="lightboxBg" class="hidden" onclick="if(event.target===this)closeLightbox()" style="position:fixed;inset:0;background:rgba(8,20,14,.9);display:none;align-items:center;justify-content:center;padding:24px;z-index:90;animation:lbFade .25s ease;">
+  <button class="lb-btn" onclick="closeLightbox()" title="Close (Esc)" style="position:absolute;top:16px;right:18px;">✕</button>
+  <button class="lb-btn" onclick="lbStep(-1)" title="Previous (←)" style="position:absolute;left:14px;top:calc(50% - 23px);">‹</button>
+  <button class="lb-btn" onclick="lbStep(1)" title="Next (→)" style="position:absolute;right:14px;top:calc(50% - 23px);">›</button>
+  <figure id="lbFigure" style="margin:0;max-width:min(94vw,1000px);text-align:center;animation:lbZoom .35s ease;">
+    <img id="lbImg" src="" alt="" style="max-width:94vw;max-height:76vh;object-fit:contain;border-radius:14px;box-shadow:0 12px 44px rgba(0,0,0,.55);background:#fff;">
+    <figcaption id="lbCap" style="color:#eaf2ee;margin-top:12px;font-size:14.5px;font-weight:600;"></figcaption>
+    <div id="lbCount" style="color:#9db8aa;margin-top:4px;font-size:12px;letter-spacing:.6px;text-transform:uppercase;"></div>
+  </figure>
+</div>
+
+<script>
+/* ---------------- Config ---------------- */
+var OVERSEER_NAME = 'Congressman Collins Unguku';
+var OVERSEER_DISPLAY = '0769679217';
+var OVERSEER_WHATSAPP = '254769679217';
+
+/* Safe storage — never throws (localStorage can be blocked in sandboxed previews) */
+var store = {
+  get: function(k){ try { return window.localStorage.getItem(k); } catch(e){ return null; } },
+  set: function(k,v){ try { window.localStorage.setItem(k,v); } catch(e){} },
+  del: function(k){ try { window.localStorage.removeItem(k); } catch(e){} }
+};
+function waNum(n){ n=String(n||'').replace(/[^\d]/g,''); if(n.length===9)n='254'+n; else if(n.length===10&&n[0]==='0')n='254'+n.slice(1); return n; }
+function openWa(num,text){ var url='https://wa.me/'+num+'?text='+encodeURIComponent(text||''); try{var w=window.open(url,'_blank'); if(w)w.focus();}catch(e){window.location.href=url;} }
+
+var token = store.get('umh_token') || '';
+var role = null;
+var me = null;
+var serverReachable = null; // null=unknown, true/false after connectivity check
+
+/* Instant connectivity probe — sets serverReachable so login never hangs on "Connecting…" */
+function probeServer(){
+  var ctrl = new AbortController();
+  var timer = setTimeout(function(){ ctrl.abort(); }, 5000);
+  fetch('/api/me', { signal: ctrl.signal }).then(function(){
+    clearTimeout(timer); serverReachable = true;
+  }).catch(function(){
+    clearTimeout(timer); serverReachable = false;
+    showOfflineBanner();
+  });
+}
+function showOfflineBanner(){
+  var b=document.getElementById('offlineBanner');
+  if(b){ b.classList.remove('hidden'); b.style.display='block'; }
+}
+
+/* ---------------- API helper (with connection timeout so it never hangs) ---------------- */
+var API_TIMEOUT = 12000; // ms: fail fast instead of spinning on "Connecting…"
+function api(path, opts){
+  opts = opts || {};
+  var init = { method: opts.method || 'GET' };
+  init.headers = Object.assign({ 'Content-Type':'application/json' }, opts.headers || {});
+  if(token) init.headers['Authorization'] = 'Bearer '+token;
+  if(opts.body !== undefined) init.body = JSON.stringify(opts.body);
+  var ctrl = new AbortController();
+  init.signal = ctrl.signal;
+  var timer = setTimeout(function(){ ctrl.abort(); }, API_TIMEOUT);
+  return fetch(path, init)
+    .then(function(res){
+      return res.text().then(function(t){
+        var d = {};
+        try { d = JSON.parse(t); } catch(e){ d = {}; }
+        if(!res.ok){ throw new Error(d.error || 'Server error ('+res.status+')'); }
+        return d;
+      });
+    })
+    .catch(function(err){
+      if(err && err.name==='AbortError'){
+        throw new Error('The server took too long to respond. Check the connection and try again.');
+      }
+      throw err;
+    })
+    .finally(function(){ clearTimeout(timer); });
+}
+
+/* ---------------- Auth / boot ---------------- */
+function pickLogin(which){
+  document.getElementById('tabOverseer').classList.toggle('active', which==='overseer');
+  document.getElementById('tabStudent').classList.toggle('active', which==='student');
+  document.getElementById('loginOverseerForm').classList.toggle('hidden', which!=='overseer');
+  document.getElementById('loginStudentForm').classList.toggle('hidden', which!=='student');
+  hideErr();
+}
+
+function guardLogin(){
+  // If we already know the server is unreachable, tell the user immediately.
+  if(serverReachable === false){
+    showErr(new Error('OFFLINE')); // handled in showErr with a clear message
+    return false;
+  }
+  // If the probe is still pending, don't wait on it — just attempt the real request.
+  return true;
+}
+
+document.getElementById('loginOverseerForm').addEventListener('submit', function(e){
+  e.preventDefault(); hideErr();
+  if(!guardLogin()) return;
+  var btn=e.target.querySelector('button[type=submit]'); busy(btn);
+  var pw = document.getElementById('ovPassword').value;
+  api('/api/login/overseer', { method:'POST', body:{ password:pw } })
+    .then(function(d){
+      token=d.token; role='overseer'; me=null;
+      store.set('umh_token',token);
+      showOverseer();                 // go straight to dashboard — no extra round-trip
+    })
+    .catch(function(err){ btn.disabled=false; btn.textContent='Log in as Overseer'; showErr(err); });
+});
+
+document.getElementById('loginStudentForm').addEventListener('submit', function(e){
+  e.preventDefault(); hideErr();
+  if(!guardLogin()) return;
+  var btn=e.target.querySelector('button[type=submit]'); busy(btn);
+  api('/api/login/student', { method:'POST', body:{ reg: document.getElementById('stReg').value, pin: document.getElementById('stPin').value } })
+    .then(function(d){
+      token=d.token; role='student'; me=d.student;
+      store.set('umh_token',token);
+      showStudent();                  // go straight to dashboard — no extra round-trip
+    })
+    .catch(function(err){ btn.disabled=false; btn.textContent='Log in as Student'; showErr(err); });
+});
+
+function showErr(err){
+  var el=document.getElementById('loginError'); el.classList.remove('hidden');
+  var msg = err && err.message ? err.message : 'Login failed';
+  var m = String(err && err.message ? err.message : '');
+  if(m === 'OFFLINE' || err && err.name==='AbortError'){
+    msg = '❌ The app cannot reach the server from this screen. ' +
+          'This usually means you are viewing a copied/plain file, not the LIVE app. ' +
+          'Open the LIVE preview (the panel showing the running "Usambara live server"), ' +
+          'or use your public hosted link after deploying.';
+  }
+  else if(err && (err.name==='TypeError' || /failed to fetch|networkerror|load failed/i.test(m))){
+    msg = '❌ Cannot reach the server. Open this through the LIVE preview (running server) ' +
+          'or your deployed public link — not as a plain file. If on the live link, wait for the server and refresh.';
+  }
+  el.textContent = msg;
+  showOfflineBanner();
+  document.querySelectorAll('button[type=submit]').forEach(function(b){ b.disabled=false; b.textContent=b.dataset.orig; });
+}
+function hideErr(){ document.getElementById('loginError').classList.add('hidden'); }
+function busy(btn){
+  if(!btn.dataset.orig) btn.dataset.orig = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Connecting…';
+}
+
+
+function boot(){
+  if(!token){ showHome(); applySettings(); return; }
+  api('/api/me').then(function(d){
+    role = d.role;
+    me = d.student || null;
+    applySettings();   // applies theme + renders the site-wide urgent notice for all roles
+    if(role==='overseer') showOverseer(); else if(role==='student') showStudent();
+  }).catch(function(){ store.del('umh_token'); token=''; showHome(); });
+}
+
+function hideAllViews(){
+  ['home','login','student','records','reports','reviews','settings'].forEach(function(v){
+    document.getElementById(v+'View').classList.add('hidden');
+  });
+}
+
+function updateTopBtns(){
+  var nav=document.getElementById('nav');
+  var loginB=document.getElementById('loginTopBtn');
+  var logoutB=document.getElementById('logoutBtn');
+  if(!nav) return;
+  nav.classList.remove('hidden');
+  // when not logged in show only the Sign In button
+  if(!token || !role){
+    [].forEach.call(nav.querySelectorAll('button[data-view]'),function(b){ b.classList.add('hidden'); });
+    if(loginB) loginB.classList.remove('hidden');
+    if(logoutB) logoutB.classList.add('hidden');
+  }
+}
+
+function showHome(){
+  role=null; me=null;
+  hideAllViews();
+  document.getElementById('homeView').classList.remove('hidden');
+  updateTopBtns(); // keeps a visible Sign In button in the top bar
+  refreshColloFab();
+  loadAnnouncements(); // public board — everyone can read the Overseer's updates
+  loadEvents();        // public calendar — upcoming events & important dates
+  loadPolls();         // public polls — residents vote once each
+  loadLostFound();     // public lost & found board
+  // adapt the Home page CTA depending on login state
+  var act = document.getElementById('homeActions');
+  if(act){
+    if(token && role){
+      act.innerHTML = '<button class="btn gold" onclick="switchView(\'records\')">Open Dashboard</button>'
+        + '<button class="btn ghost" onclick="openAbout()">About the Overseer</button>';
+    } else {
+      act.innerHTML = '<button class="btn gold" onclick="showLogin()">🔐 Sign In</button>'
+        + '<button class="btn ghost" onclick="openAbout()">About the Overseer</button>';
+    }
+  }
+}
+
+function showLogin(){
+  role=null; me=null;
+  hideAllViews();
+  document.getElementById('loginView').classList.remove('hidden');
+  updateTopBtns();
+  refreshColloFab();
+}
+
+function showOverseer(){
+  hideAllViews();
+  document.getElementById('nav').classList.remove('hidden');
+  document.querySelectorAll('#nav button').forEach(function(b){ b.classList.add('hidden'); });
+  document.querySelector('#nav button[data-view="home"]').classList.remove('hidden');
+  document.querySelector('#nav button[data-view="records"]').classList.remove('hidden');
+  document.querySelector('#nav button[data-view="reports"]').classList.remove('hidden');
+  document.querySelector('#nav button[data-view="reviews"]').classList.remove('hidden');
+  document.querySelector('#nav button[data-view="settings"]').classList.remove('hidden');
+  document.getElementById('loginTopBtn').classList.add('hidden');
+  document.getElementById('logoutBtn').classList.remove('hidden');
+  checkDataAlert();          // show the "data is getting large" warning if needed
+  refreshColloFab(); colloLoad();   // Overseer sees the bot; fetch its live visibility/AI status
+  switchView('records');
+}
+
+function showStudent(){
+  hideAllViews();
+  document.getElementById('nav').classList.remove('hidden');
+  document.querySelectorAll('#nav button').forEach(function(b){ b.classList.add('hidden'); });
+  document.querySelector('#nav button[data-view="home"]').classList.remove('hidden');
+  document.querySelector('#nav button[data-view="student"]').classList.remove('hidden');
+  document.querySelector('#nav button[data-view="reviews"]').classList.remove('hidden');
+  document.getElementById('loginTopBtn').classList.add('hidden');
+  document.getElementById('logoutBtn').classList.remove('hidden');
+  renderStudent();
+  refreshColloFab(); colloLoad();
+  switchView('student');
+}
+
+function switchView(view){
+  hideAllViews();
+  document.getElementById(view+'View').classList.remove('hidden');
+  document.querySelectorAll('#nav button[data-view]').forEach(function(b){
+    b.classList.toggle('active', b.dataset.view===view);
+  });
+  if(view==='records'){ loadStudents(); loadSnapshots(); loadEmailConfig(); loadSecurity(); }   // student records + data-safety backups + email + security centre
+  if(view==='reports'){ loadReports(); loadReportInsights(); }    // reports log + insights
+  if(view==='reviews') loadReviews();    // fetch + render the reviews
+  if(view==='settings'){ document.getElementById('changePassForm').reset(); loadSettings(); loadStorage(); loadTheme(true); loadChatbot(true); aiStatus(true); }
+  if(view==='home'){ applySettings(); loadAnnouncements(); loadEvents(); loadPolls(); loadLostFound(); }
+  if(view==='home'){ var act=document.getElementById('homeActions'); if(act){ act.innerHTML = (role&&token)
+      ? '<button class="btn gold" onclick="switchView(\'records\')">Open Dashboard</button>'
+        + '<button class="btn ghost" onclick="openAbout()">About the Overseer</button>'
+      : '<button class="btn gold" onclick="showLogin()">🔐 Sign In</button>'
+        + '<button class="btn ghost" onclick="openAbout()">About the Overseer</button>'; } }
+  window.scrollTo({top:0});
+}
+document.getElementById('nav').addEventListener('click', function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  if(b.id==='logoutBtn'){ if(token){ api('/api/logout',{method:'POST'}).catch(function(){}); } token=''; store.del('umh_token'); showLogin(); }
+  else if(b.dataset.view){ switchView(b.dataset.view); }
+});
+
+/* ---------------- Student dashboard ---------------- */
+function renderStudent(){
+  document.getElementById('stuWelcome').textContent = 'Welcome, '+me.name+' ('+me.reg+') — Block '+me.block+' · Room '+me.room+'. You can view your record and submit reports below.';
+  var html = [
+    ['Full Name', me.name], ['Reg / Adm No.', me.reg], ['Block', 'Block '+me.block],
+    ['Room', me.room], ['Room Type', me.roomType||'—'], ['Phone', me.phone||'—'], ['Guardian', me.guardian||'—'],
+    ['Guardian Phone', me.guardianPhone||'—']
+  ].map(function(r){ return '<div><div class="who-box"><div class="lbl">'+r[0]+'</div><div class="val">'+esc(r[1])+'</div></div></div>'; }).join('');
+  document.getElementById('stuRecord').innerHTML = html;
+  loadResidentCount();
+  loadMyReports();
+}
+// Show ONLY the total number of residents (no other students' private details).
+function loadResidentCount(){
+  api('/api/stats/public').then(function(d){
+    var el = document.getElementById('stuResidentCount');
+    if(el) el.textContent = (d.residents||0);
+  }).catch(function(){});
+}
+// Rate-us nudge: shown after the student interacts (submits a report / uses Collo AI).
+function maybeShowRateNudge(){
+  try {
+    if(localStorage.getItem('stuRated_'+(me&&me.reg||'')) || localStorage.getItem('stuNudged_'+(me&&me.reg||''))) return;
+    localStorage.setItem('stuNudged_'+(me&&me.reg||''), '1');
+    var n=document.getElementById('stuRateNudge'); if(n) n.classList.remove('hidden');
+  } catch(e){}
+}
+function dismissRateNudge(){ var n=document.getElementById('stuRateNudge'); if(n) n.classList.add('hidden'); }
+function goRateNow(){ dismissRateNudge(); try{ localStorage.setItem('stuRated_'+(me&&me.reg||''),'1'); }catch(e){} switchView('reviews'); }
+// Download the student's OWN record as a text file.
+function downloadMyInfo(){
+  if(!me){ toast('Please sign in first.'); return; }
+  var lines = [
+    'COLLINS UNGUKU USAMBARA HOSTELS — MY RECORD',
+    '============================================',
+    'Full Name      : '+(me.name||''),
+    'Reg / Adm No.  : '+(me.reg||''),
+    'Block          : Block '+(me.block||''),
+    'Room           : '+(me.room||''),
+    'Room Type      : '+(me.roomType||'—'),
+    'Phone          : '+(me.phone||'—'),
+    'Guardian       : '+(me.guardian||'—'),
+    'Guardian Phone : '+(me.guardianPhone||'—'),
+    '',
+    'This file contains only YOUR OWN information.',
+    'Generated on '+new Date().toLocaleString(),
+    'Overseer / WhatsApp: 0769679217'
+  ];
+  var blob = new Blob([lines.join('\n')], {type:'text/plain'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='my-record-'+(me.reg||'student').replace(/[^a-z0-9]/gi,'_')+'.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+// Print / Save-as-PDF of the student's OWN record.
+function printMyInfo(){
+  if(!me){ toast('Please sign in first.'); return; }
+  var rows = [['Full Name',me.name],['Reg / Adm No.',me.reg],['Block','Block '+(me.block||'')],['Room',me.room],
+    ['Room Type',me.roomType||'—'],['Phone',me.phone||'—'],['Guardian',me.guardian||'—'],['Guardian Phone',me.guardianPhone||'—']]
+    .map(function(r){return '<tr><td style="padding:6px 10px;font-weight:700;border:1px solid #ccc;">'+esc(r[0])+'</td><td style="padding:6px 10px;border:1px solid #ccc;">'+esc(r[1])+'</td></tr>';}).join('');
+  var w=window.open('','_blank'); if(!w){ toast('Please allow pop-ups to print.'); return; }
+  w.document.write('<html><head><title>My Record — '+(me.name||'')+'</title></head><body style="font-family:Arial,sans-serif;padding:24px;">'
+    +'<h2 style="color:#14532d;">COLLINS UNGUKU USAMBARA HOSTELS</h2><h3>My Record</h3>'
+    +'<table style="border-collapse:collapse;">'+rows+'</table>'
+    +'<p style="font-size:12px;color:#666;margin-top:16px;">This document contains only your own information. Generated '+new Date().toLocaleString()+'. Overseer / WhatsApp 0769679217.</p>'
+    +'</body></html>'); w.document.close(); setTimeout(function(){ w.focus(); w.print(); },300);
+}
+function loadMyReports(){
+  api('/api/reports/mine').then(function(d){
+    var el=document.getElementById('stuReportsList');
+    var empty=document.getElementById('stuReportsEmpty');
+    el.innerHTML='';
+    if(!d.reports.length){ empty.classList.remove('hidden'); return; }
+    empty.classList.add('hidden');
+    d.reports.forEach(function(r){
+      var when=new Date(r.date).toLocaleDateString()+' '+new Date(r.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+      var st = stageTag(r);
+      var urg = r.urg==='Emergency' ? '🚨' : r.urg==='Urgent' ? '🔴' : '';
+      var replies='';
+      if(Array.isArray(r.replies) && r.replies.length){
+        replies = r.replies.map(function(rp){
+          var rw=new Date(rp.date).toLocaleString();
+          return '<div style="margin-top:8px;padding:10px 12px;background:#f0f7f2;border-left:3px solid var(--green);border-radius:8px;">'
+            +'<div style="font-size:11px;font-weight:800;color:var(--green-d);">↩️ Reply from the Overseer · '+rw+'</div>'
+            +'<div style="font-size:13.5px;margin-top:4px;white-space:pre-wrap;">'+esc(rp.text)+'</div></div>';
+        }).join('');
+      } else {
+        replies='<div class="hint" style="margin-top:8px;">No reply from the Overseer yet. You can also WhatsApp them on 0769679217.</div>';
+      }
+      el.innerHTML += '<div class="report"><div class="top"><div>'+urg+' '+st+'</div><span class="when">'+when+'</span></div>'
+        + '<p>'+esc(r.msg)+'</p>'+renderFileAttachment(r.file)+renderTimeline(r)+replies+'</div>';
+    });
+  }).catch(toastErr);
+}
+document.getElementById('studentReportForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var msg = document.getElementById('stuMsg').value;
+  var urg = document.getElementById('stuUrg').value;
+  var fi = document.getElementById('stuReportFile');
+  var btn = this.querySelector('button[type="submit"]');
+  var submitReport = function(filePayload){
+    api('/api/reports', { method:'POST', body:{ msg: msg, urg: urg, file: filePayload } })
+      .then(function(){ toast('Report submitted to the Overseer. ✅'); document.getElementById('studentReportForm').reset(); loadMyReports(); maybeShowRateNudge(); })
+      .catch(toastErr);
+  };
+  if(fi && fi.files && fi.files[0]){
+    var f = fi.files[0];
+    if(f.size > 4*1024*1024){ toast('Attachment too large (max 4 MB).'); return; }
+    if(btn){ btn.disabled=true; btn.textContent='Uploading…'; }
+    fileToDataUrl(f).then(function(dataUrl){
+      if(btn){ btn.disabled=false; btn.textContent='Submit Report'; }
+      submitReport({ name:f.name, type:f.type, dataUrl:dataUrl });
+    }).catch(function(err){ if(btn){ btn.disabled=false; btn.textContent='Submit Report'; } toastErr(err); });
+  } else {
+    submitReport(null);
+  }
+});
+/* ---------------- WhatsApp interactive problem menu ---------------- */
+var WA_PROBLEMS = [
+  { icon:'💧', label:'Water / Plumbing' },
+  { icon:'💡', label:'Electricity' },
+  { icon:'🔑', label:'Lock / Access' },
+  { icon:'🛏️', label:'Room / Bed issue' },
+  { icon:'🧹', label:'Cleaning / Hygiene' },
+  { icon:'🔊', label:'Noise / Disturbance' },
+  { icon:'🚨', label:'Security / Safety' },
+  { icon:'📶', label:'WiFi / Network' },
+  { icon:'📦', label:'Lost / Found Property' },
+  { icon:'🛠️', label:'Other' }
+];
+
+function waContactOverseer(){
+  // Show the interactive problem-type selector before redirecting to WhatsApp
+  var list = document.getElementById('waTypeList');
+  list.innerHTML = WA_PROBLEMS.map(function(p,i){
+    return '<button onclick="pickWaProblem('+i+')" class="btn" style="display:flex;align-items:center;gap:10px;width:100%;justify-content:flex-start;background:#fff;color:var(--ink);border:1px solid var(--line);font-weight:600;padding:12px 14px;border-radius:10px;">'
+      + '<span style="font-size:20px;">'+p.icon+'</span><span>'+p.label+'</span></button>';
+  }).join('');
+  var bg = document.getElementById('waModalBg');
+  bg.classList.remove('hidden'); bg.style.display='flex';
+}
+
+function pickWaProblem(idx){
+  var p = WA_PROBLEMS[idx];
+  closeWaModal();
+  // Build an assured, menu-style message with the chosen problem type
+  var studentLine = '';
+  if(me && me.name) studentLine = '\n\nStudent: ' + me.name + (me.reg ? ' ('+me.reg+')' : '') + (me.room ? '\nBlock ' + me.block + ' · Room ' + me.room : '');
+  var txt = 'Hello ' + OVERSEER_NAME + ', this is a student at Usambara Male Hostels. ' + studentLine
+    + '\n\nI would like to report the following problem type: *' + p.icon + ' ' + p.label + '*'
+    + '\n\nPlease assist me. [add details here]'
+    + '\n\nThank you for attending to my issue promptly. I trust it will be resolved effectively.';
+  openWa(OVERSEER_WHATSAPP, txt);
+}
+
+function closeWaModal(){
+  var bg = document.getElementById('waModalBg');
+  bg.classList.add('hidden'); bg.style.display='none';
+}
+
+/* ---------------- Overseer: records ---------------- */
+var students = [];
+function renderOccupancy(){
+  var grid=document.getElementById('occupancyGrid');
+  var rt=document.getElementById('roomTypeBreakdown');
+  if(!grid) return;
+  var all=students||[];
+  var total=all.length;
+  var blocks=['2','3','4','5'];
+  var byBlock={}; blocks.forEach(function(b){ byBlock[b]=0; });
+  var byType={};
+  all.forEach(function(s){
+    var b=String(s.block||'');
+    if(byBlock[b]!==undefined) byBlock[b]++;
+    var t=((s.roomType||'').trim())||'Other';
+    byType[t]=(byType[t]||0)+1;
+  });
+  var html='<div style="background:linear-gradient(180deg,#fff,#f7faf8);border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center;">'
+    +'<div style="font-size:28px;font-weight:800;color:var(--green-d);">'+total+'</div>'
+    +'<div class="hint" style="margin:0;">Total residents</div></div>';
+  blocks.forEach(function(b){
+    var n=byBlock[b];
+    var pct=total?Math.round((n/total)*100):0;
+    html+='<div style="border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center;">'
+      +'<div style="font-size:24px;font-weight:800;color:var(--ink);">'+n+'</div>'
+      +'<div class="hint" style="margin:0 0 6px;">Block '+b+' · '+pct+'%</div>'
+      +'<div style="height:6px;background:#eef2f0;border-radius:99px;overflow:hidden;"><div style="height:100%;width:'+pct+'%;background:var(--green);"></div></div>'
+      +'</div>';
+  });
+  grid.innerHTML=html;
+  var types=Object.keys(byType).sort(function(a,b){ return byType[b]-byType[a]; });
+  if(!rt) return;
+  if(!types.length){ rt.innerHTML=''; return; }
+  var rtHtml='<div class="hint" style="margin:0 0 8px;font-weight:700;color:var(--ink);">By room type</div><div style="display:flex;flex-wrap:wrap;gap:8px;">';
+  types.forEach(function(t){
+    rtHtml+='<span class="tag" style="background:#eef2f0;color:var(--ink);font-size:12px;padding:6px 10px;">'+esc(t)+': <b>'+byType[t]+'</b></span>';
+  });
+  rtHtml+='</div>';
+  rt.innerHTML=rtHtml;
+}
+function renderRecords(){
+  renderOccupancy();
+  var q=(document.getElementById('searchBox').value||'').toLowerCase();
+  var fb=document.getElementById('filterBlock').value;
+  var list=students.filter(function(s){
+    if(fb && String(s.block)!==fb) return false;
+    if(q && ((s.name+' '+(s.reg||'')+' '+(s.room||'')+' '+(s.phone||'')).toLowerCase().indexOf(q)===-1)) return false;
+    return true;
+  }).sort(function(a,b){ return (a.block-b.block)||(a.name||'').localeCompare(b.name||''); });
+  var body=document.getElementById('recordsBody');
+  var empty=document.getElementById('recordsEmpty');
+  body.innerHTML='';
+  if(!list.length){ empty.classList.remove('hidden'); return; }
+  empty.classList.add('hidden');
+  list.forEach(function(s){
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td><b>'+esc(s.name)+'</b></td><td>'+esc(s.reg)+'</td>'
+      +'<td><span class="tag b'+esc(s.block)+'">Block '+esc(s.block)+'</span></td><td>'+esc(s.room)+'</td>'
+      +'<td>'+esc(s.roomType||'—')+'</td>'
+      +'<td>'+esc(s.phone||'—')+'</td><td>'+esc(s.guardian||'—')+'</td>'
+      +'<td>••••</td>'
+      +'<td><div class="actions"><button class="btn ghost sm" onclick="openEdit(\''+s.id+'\')">Edit</button>'
+      +'<button class="btn danger sm" onclick="delStudent(\''+s.id+'\')">Del</button></div></td>';
+    body.appendChild(tr);
+  });
+}
+function loadStudents(){ api('/api/students').then(function(d){ students=d.students; renderRecords(); }).catch(toastErr); }
+
+function openAdd(){
+  document.getElementById('modalTitle').textContent='Add Student';
+  document.getElementById('studentForm').reset();
+  delete document.getElementById('studentForm').dataset.id;
+  document.getElementById('submitBtn').textContent='Save';
+  document.getElementById('deleteBtn').classList.add('hidden');
+  document.getElementById('fPin').required=true;
+  showModal();
+}
+function openEdit(id){
+  var s=students.find(function(x){return x.id===id;}); if(!s) return;
+  document.getElementById('modalTitle').textContent='Edit Student — '+s.name;
+  document.getElementById('fName').value=s.name; document.getElementById('fReg').value=s.reg;
+  document.getElementById('fBlock').value=String(s.block); document.getElementById('fRoom').value=s.room;
+  document.getElementById('fRoomType').value=s.roomType||'';
+  document.getElementById('fPhone').value=s.phone||''; document.getElementById('fGuardian').value=s.guardian||'';
+  document.getElementById('fGuardianPhone').value=s.guardianPhone||''; document.getElementById('fPin').value='';
+  document.getElementById('studentForm').dataset.id=id;
+  document.getElementById('submitBtn').textContent='Save Changes';
+  document.getElementById('deleteBtn').classList.remove('hidden');
+  document.getElementById('fPin').required=false;
+  showModal();
+}
+document.getElementById('studentForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var id=this.dataset.id;
+  var body={ name:val('fName'), reg:val('fReg'), block:val('fBlock'), room:val('fRoom'), roomType:val('fRoomType'),
+    phone:val('fPhone'), guardian:val('fGuardian'), guardianPhone:val('fGuardianPhone') };
+  if(val('fPin')) body.pin=val('fPin');
+  var p = id ? api('/api/students/'+id,{method:'PUT',body:body}) : api('/api/students',{method:'POST',body:body});
+  p.then(function(){ toast(id?'Student updated.':'Student added.'); closeModal(); loadStudents(); })
+   .catch(toastErr);
+});
+function delStudent(){
+  var id=document.getElementById('studentForm').dataset.id;
+  if(!id) return;
+  if(!confirm('Delete this student record permanently?')) return;
+  api('/api/students/'+id,{method:'DELETE'}).then(function(){ toast('Student deleted.'); closeModal(); loadStudents(); }).catch(toastErr);
+}
+function showModal(){ document.getElementById('modalBg').classList.remove('hidden'); document.getElementById('modalBg').style.display='flex'; }
+function closeModal(){ document.getElementById('modalBg').classList.add('hidden'); document.getElementById('modalBg').style.display='none'; }
+function openAbout(){ var bg=document.getElementById('aboutModalBg'); if(bg){ if(bg.parentNode!==document.body) document.body.appendChild(bg); bg.classList.remove('hidden'); bg.style.display='flex'; document.body.style.overflow='hidden'; } }
+function closeAbout(){ var bg=document.getElementById('aboutModalBg'); if(bg){ bg.classList.add('hidden'); bg.style.display='none'; document.body.style.overflow=''; } }
+document.addEventListener('keydown', function(e){
+  var lb=document.getElementById('lightboxBg');
+  var lbOpen = lb && lb.style.display==='flex';
+  if(e.key==='Escape'){
+    if(lbOpen){ closeLightbox(); return; }
+    var ab=document.getElementById('aboutModalBg'); if(ab && ab.style.display==='flex'){ closeAbout(); }
+    var ae=document.getElementById('annEditBg'); if(ae && ae.style.display==='flex'){ closeAnnEdit(); }
+  } else if(lbOpen && e.key==='ArrowLeft'){ lbStep(-1); }
+  else if(lbOpen && e.key==='ArrowRight'){ lbStep(1); }
+});
+function val(id){ return document.getElementById(id).value.trim(); }
+
+/* ---------------- Overseer: reports ---------------- */
+var reports=[];
+/* ---------------- Report insights (overseer analytics) ---------------- */
+function loadReportInsights(){
+  api('/api/reports/insights').then(renderReportInsights).catch(function(){ /* optional */ });
+}
+function renderReportInsights(d){
+  var grid=document.getElementById('insightsGrid');
+  var bd=document.getElementById('insightsBreakdown');
+  if(!grid) return;
+  d=d||{};
+  function tile(label, value, color){
+    return '<div style="background:#f7faf8;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center;">'
+      + '<div style="font-size:24px;font-weight:800;color:'+(color||'var(--green-d)')+';line-height:1.1;">'+value+'</div>'
+      + '<div class="hint" style="margin:4px 0 0;">'+esc(label)+'</div></div>';
+  }
+  var bs=d.byStatus||{};
+  grid.innerHTML =
+      tile('Total reports', d.total||0)
+    + tile('Open', d.open||0, 'var(--gold)')
+    + tile('In progress', bs.in_progress||0, 'var(--blue)')
+    + tile('Resolved', bs.resolved||0, 'var(--green)')
+    + tile('Last 7 days', d.recent7days||0)
+    + tile('Avg resolve', (d.avgResolutionHours==null?'—':esc(d.avgResolutionHours)+'h'));
+  function chips(title, obj){
+    var keys=Object.keys(obj||{});
+    if(!keys.length) return '';
+    keys.sort(function(a,b){ return obj[b]-obj[a] || String(a).localeCompare(String(b)); });
+    var h='<div class="hint" style="margin:0 0 6px;font-weight:700;color:var(--ink);">'+esc(title)+'</div><div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">';
+    keys.forEach(function(k){ h+='<span class="tag" style="background:#eef2f0;color:var(--ink);font-size:12px;padding:6px 10px;">'+esc(k)+': <b>'+obj[k]+'</b></span>'; });
+    return h+'</div>';
+  }
+  if(bd){
+    var html = chips('By block', d.byBlock) + chips('By urgency', d.byUrgency) + chips('By status', d.byStatus);
+    bd.innerHTML = html || '<div class="hint">No reports yet.</div>';
+  }
+}
+function loadReports(){ api('/api/reports').then(function(d){ reports=d.reports; renderReports(); }).catch(toastErr); }
+function renderReports(){
+  var el=document.getElementById('reportsList');
+  var empty=document.getElementById('reportsEmpty');
+  el.innerHTML='';
+  if(!reports.length){ empty.classList.remove('hidden'); return; }
+  empty.classList.add('hidden');
+  reports.forEach(function(r){
+    var when=new Date(r.date).toLocaleDateString()+' '+new Date(r.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    var urg = r.urg==='Emergency' ? '<span class="tag" style="background:var(--red-l);color:var(--red);">🚨 Emergency</span>'
+      : r.urg==='Urgent' ? '<span class="tag" style="background:#fff3e0;color:#e65100;">🔴 Urgent</span>'
+      : '<span class="tag" style="background:#eef2f0;color:var(--muted);">Normal</span>';
+    var st = stageTag(r);
+    var prevReplies='';
+    if(Array.isArray(r.replies) && r.replies.length){
+      prevReplies = r.replies.map(function(rp){
+        return '<div style="margin-top:6px;padding:8px 10px;background:#f0f7f2;border-left:3px solid var(--green);border-radius:8px;font-size:13px;">'
+          +'<b style="color:var(--green-d);">You replied</b> · '+new Date(rp.date).toLocaleString()+'<div style="white-space:pre-wrap;">'+esc(rp.text)+'</div></div>';
+      }).join('');
+    }
+    el.innerHTML += '<div class="report"><div class="top"><div>'+urg+' '+st+'</div><span class="when">'+when+'</span></div>'
+      +'<div class="who">'+esc(r.name)+' <span style="color:var(--muted);font-weight:400;">· '+esc(r.reg)+'</span></div>'
+      +'<p>'+esc(r.msg)+'</p>'
+      +renderFileAttachment(r.file)
+      +renderTimeline(r)
+      +'<div class="hint" style="margin-top:6px;">📍 Block '+esc(r.block||'—')+' · Room '+esc(r.room||'—')+' · WhatsApp '+esc(r.phone||'—')+'</div>'
+      +prevReplies
+      +'<div style="margin-top:10px;"><label class="hint" style="margin:0 0 4px;">✍️ Reply in the system — the student sees this on their own page</label>'
+      +'<textarea id="reply_'+r.id+'" rows="2" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;" placeholder="Type your response to '+esc(r.name)+'..."></textarea></div>'
+      +'<div class="actions" style="margin-top:8px;align-items:center;">'
+      +'<button class="btn gold sm" onclick="replyInSystem(\''+r.id+'\')">📨 Send Reply</button>'
+      +'<button class="btn wa sm" onclick="waReply(\''+r.id+'\')">💬 WhatsApp</button>'
+      +'<select onchange="setReportStatus(\''+r.id+'\', this.value)" title="Set status" style="padding:7px 8px;border:1px solid var(--line);border-radius:8px;font-size:12px;font-weight:700;background:#fff;color:var(--ink);cursor:pointer;">'
+      +'<option value="received"'+(stageOf(r)==='received'?' selected':'')+'>📥 Received</option>'
+      +'<option value="in_progress"'+(stageOf(r)==='in_progress'?' selected':'')+'>🔧 In progress</option>'
+      +'<option value="resolved"'+(stageOf(r)==='resolved'?' selected':'')+'>✅ Resolved</option>'
+      +'</select>'
+      +'<button class="btn danger sm" onclick="delReport(\''+r.id+'\')">Delete</button></div></div>';
+  });
+}
+function replyInSystem(id){
+  var ta=document.getElementById('reply_'+id); var text=ta?ta.value.trim():'';
+  if(!text){ toast('Type a reply first.'); return; }
+  api('/api/reports/'+id,{method:'PUT',body:{reply:text}})
+    .then(function(){ toast('Reply sent — the student can now see it. ✅'); loadReports(); })
+    .catch(toastErr);
+}
+function waReply(id){
+  var r=reports.find(function(x){return x.id===id;}); if(!r) return;
+  var num=waNum(r.phone); if(!num){ toast('This report has no WhatsApp number.'); return; }
+  var txt='Hello '+r.name+', this is '+OVERSEER_NAME+' (Overseer, Usambara Male Hostels). Regarding your report ('+(r.block?'Block '+r.block+(r.room?', Room '+r.room:''):'')+'): "'+r.msg+'" — [type your response here].';
+  openWa(num,txt);
+}
+function setReportStatus(id,status){
+  api('/api/reports/'+id,{method:'PUT',body:{status:status}})
+    .then(function(){ toast('Status updated to "'+stageMeta(status).label+'".'); loadReports(); }).catch(toastErr);
+}
+// Back-compat: advance a report to the next stage (used by any leftover callers).
+function toggleReport(id){
+  var r=reports.find(function(x){return x.id===id;}); if(!r) return;
+  var order=['received','in_progress','resolved'];
+  var i=order.indexOf(stageOf(r)); var next=order[(i+1)%order.length];
+  setReportStatus(id,next);
+}
+function delReport(id){
+  if(!confirm('Delete this report?')) return;
+  api('/api/reports/'+id,{method:'DELETE'}).then(loadReports).catch(toastErr);
+}
+
+/* ---------------- Group updates / announcements ---------------- */
+var announcements = [];
+var annResidents = 0;
+function loadAnnouncements(){
+  api('/api/announcements').then(function(d){
+    announcements = d.announcements || [];
+    annResidents = d.residents || 0;
+    renderAnnouncements();
+    // A signed-in student viewing the board counts as "seen" (read receipt).
+    if(role==='student' && announcements.length){
+      api('/api/announcements/view-all',{method:'POST'}).then(function(){ /* quiet */ }).catch(function(){});
+    }
+  }).catch(function(){ /* board is optional */ });
+}
+function renderAnnouncements(){
+  var el=document.getElementById('announcementsBoard');
+  var empty=document.getElementById('annEmpty');
+  if(!el) return;
+  el.innerHTML='';
+  // show the post form only to the overseer
+  var form=document.getElementById('annForm');
+  if(form){ if(role==='overseer') form.classList.remove('hidden'); else form.classList.add('hidden'); }
+  if(!announcements.length){ if(empty) empty.classList.remove('hidden'); return; }
+  if(empty) empty.classList.add('hidden');
+  announcements.forEach(function(a){
+    var when=new Date(a.date).toLocaleString()+(a.edited?' <span class="hint" style="display:inline;">(edited)</span>':'');
+    var pin = a.pinned ? '<span class="tag" style="background:#fff3e0;color:#e65100;">📌 Pinned</span> ' : '';
+    var impBadge = a.important ? '<span class="tag" style="background:#ffebee;color:#c62828;">⚠️ Important</span> ' : '';
+    var fileHtml = renderFileAttachments((a.files && a.files.length) ? a.files : (a.file ? [a.file] : []));
+    // Read receipt — only the Overseer sees who/how many have viewed it.
+    var receipt='';
+    if(role==='overseer' && annResidents>0){
+      var seen=a.viewCount||0, all=annResidents;
+      var pct=Math.round((seen/all)*100);
+      var col = pct>=75 ? 'var(--green-d)' : pct>=40 ? '#e65100' : 'var(--muted)';
+      receipt = '<div class="hint" style="margin-top:8px;display:flex;align-items:center;gap:8px;">'
+        + '<span>👁 Seen by <b style="color:'+col+';">'+seen+' of '+all+'</b> residents</span>'
+        + '<span style="flex:1;height:6px;background:#eef2f0;border-radius:99px;overflow:hidden;max-width:160px;">'
+        + '<span style="display:block;height:100%;width:'+pct+'%;background:'+col+';"></span></span></div>';
+    }
+    // Acknowledgment — IMPORTANT notices need a resident tap; Overseer sees the tally.
+    var ack='';
+    if(a.important){
+      if(role==='overseer' && annResidents>0){
+        var ac=a.ackCount||0, all=annResidents;
+        var apct=Math.round((ac/all)*100);
+        var acol = apct>=75 ? 'var(--green-d)' : apct>=40 ? '#e65100' : '#c62828';
+        ack = '<div class="hint" style="margin-top:8px;display:flex;align-items:center;gap:8px;">'
+          + '<span>✅ Acknowledged by <b style="color:'+acol+';">'+ac+' of '+all+'</b> residents</span>'
+          + '<span style="flex:1;height:6px;background:#eef2f0;border-radius:99px;overflow:hidden;max-width:160px;">'
+          + '<span style="display:block;height:100%;width:'+apct+'%;background:'+acol+';"></span></span></div>';
+      } else if(role==='student'){
+        if(a.youAck){
+          ack = '<div style="margin-top:10px;"><span class="tag" style="background:#e8f5e9;color:var(--green-d);">✅ Acknowledged</span></div>';
+        } else {
+          ack = '<div style="margin-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">'
+            + '<button class="btn gold sm" onclick="acknowledgeAnnouncement(\''+a.id+'\')">✅ Acknowledge</button>'
+            + '<span class="hint">Please confirm you have read this important notice.</span></div>';
+        }
+      }
+    }
+    var del = (role==='overseer') ? '<button class="btn ghost sm" onclick="openAnnEdit(\''+a.id+'\')">Edit</button> <button class="btn danger sm" onclick="delAnnouncement(\''+a.id+'\')">Delete</button>' : '';
+    el.innerHTML += '<div class="report"><div class="top"><div>'+pin+impBadge+'<b>'+(a.title?esc(a.title):'Update')+'</b></div><span class="when">'+when+'</span></div>'
+      + (a.body?'<p style="white-space:pre-wrap;">'+fmtBody(a.body)+'</p>':'')
+      + fileHtml
+      + receipt
+      + ack
+      + (del?'<div class="actions" style="margin-top:8px;">'+del+'</div>':'')
+      + '</div>';
+  });
+}
+function fileToDataUrl(file){
+  return new Promise(function(resolve,reject){
+    var fr=new FileReader();
+    fr.onload=function(){ resolve(fr.result); };
+    fr.onerror=function(){ reject(new Error('Could not read file.')); };
+    fr.readAsDataURL(file);
+  });
+}
+// Render an attachment (image preview, or a download button for other files).
+function renderFileAttachment(f){
+  if(!f || !f.url) return '';
+  var isImg = (f.type||'').indexOf('image/')===0 || /\.(png|jpe?g|gif|webp)$/i.test(f.url);
+  if(isImg){
+    return '<a href="'+f.url+'" target="_blank" rel="noopener"><img src="'+f.url+'" alt="'+esc(f.name||'attachment')+'" style="max-width:100%;max-height:280px;border-radius:10px;margin-top:8px;border:1px solid var(--line);"></a>';
+  }
+  return '<div style="margin-top:8px;"><a class="btn ghost sm" href="'+f.url+'" target="_blank" rel="noopener" download>📎 '+esc(f.name||'Download attachment')+'</a></div>';
+}
+// Render several attachments: images inline, video/audio with players, everything else as downloads.
+function renderFileAttachments(files){
+  if(!files || !files.length) return '';
+  var html='';
+  files.forEach(function(f){
+    if(!f || !f.url) return;
+    var type=(f.type||'').toLowerCase();
+    if(type.indexOf('image/')===0){
+      html+='<a href="'+f.url+'" target="_blank" rel="noopener"><img src="'+f.url+'" alt="'+esc(f.name||'attachment')+'" style="max-width:100%;max-height:300px;border-radius:10px;margin:8px 8px 0 0;border:1px solid var(--line);"></a>';
+    } else if(type.indexOf('video/')===0){
+      html+='<div style="margin-top:8px;"><video controls preload="metadata" src="'+f.url+'" style="max-width:100%;max-height:320px;border-radius:10px;border:1px solid var(--line);"></video><div class="hint" style="margin-top:2px;">🎬 '+esc(f.name||'video')+'</div></div>';
+    } else if(type.indexOf('audio/')===0){
+      html+='<div style="margin-top:8px;"><audio controls src="'+f.url+'" style="width:100%;max-width:420px;"></audio><div class="hint" style="margin-top:2px;">🎵 '+esc(f.name||'audio')+'</div></div>';
+    } else {
+      html+='<div style="margin-top:8px;"><a class="btn ghost sm" href="'+f.url+'" target="_blank" rel="noopener" download>📎 '+esc(f.name||'Download attachment')+'</a></div>';
+    }
+  });
+  return html;
+}
+// Safe lightweight rich text: escapes HTML first, then applies **bold**, *italic*, links and bullets.
+function fmtBody(s){
+  var t=esc(s);
+  t=t.replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>');
+  t=t.replace(/(^|[\s(])\*([^*\s][^*]*?)\*(?=[\s).,!?;:]|$)/g,'$1<i>$2</i>');
+  t=t.replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+  t=t.replace(/(^|\n)[ \t]*[-•][ \t]+/g,'$1&nbsp;&nbsp;•&nbsp;');
+  return t;
+}
+/* ---------------- Report status timeline helpers ---------------- */
+var REPORT_STAGES = [
+  { key:'received',    label:'Received',    icon:'📥', color:'#e65100', bg:'#fff3e0' },
+  { key:'in_progress', label:'In progress', icon:'🔧', color:'#0d47a1', bg:'#e3f2fd' },
+  { key:'resolved',    label:'Resolved',    icon:'✅', color:'var(--green-d)', bg:'var(--green-l)' }
+];
+function stageOf(r){
+  var s = r && r.status;
+  if(s==='open') return 'received';
+  if(s==='done') return 'resolved';
+  if(s==='in_progress') return 'in_progress';
+  if(s==='resolved') return 'resolved';
+  return 'received';
+}
+function stageMeta(key){
+  for(var i=0;i<REPORT_STAGES.length;i++){ if(REPORT_STAGES[i].key===key) return REPORT_STAGES[i]; }
+  return REPORT_STAGES[0];
+}
+function stageTag(r){
+  var m=stageMeta(stageOf(r));
+  return '<span class="tag" style="background:'+m.bg+';color:'+m.color+';">'+m.icon+' '+m.label+'</span>';
+}
+function renderTimeline(r){
+  var cur=stageOf(r), curIdx=0;
+  for(var i=0;i<REPORT_STAGES.length;i++){ if(REPORT_STAGES[i].key===cur) curIdx=i; }
+  var hist={}; (r.statusHistory||[]).forEach(function(h){ if(h && h.status && !hist[h.status]) hist[h.status]=h.date; });
+  var cells=REPORT_STAGES.map(function(s,idx){
+    var reached=idx<=curIdx;
+    var d=hist[s.key]||(idx===0?r.date:null);
+    var when=d?new Date(d).toLocaleDateString():'';
+    return '<td style="text-align:center;padding:0 2px;width:33%;vertical-align:top;">'
+      +'<div style="font-size:17px;line-height:1;">'+(reached?s.icon:'<span style="opacity:.3;">○</span>')+'</div>'
+      +'<div style="font-size:10.5px;font-weight:'+(reached?'800':'500')+';color:'+(reached?s.color:'var(--muted)')+';margin-top:2px;">'+s.label+'</div>'
+      +(when?'<div style="font-size:9.5px;color:var(--muted);">'+when+'</div>':'')
+      +'</td>';
+  }).join('');
+  return '<table style="width:100%;border-collapse:collapse;margin:8px 0 2px;"><tr>'+cells+'</tr></table>';
+}
+function postAnnouncement(){
+  var title=document.getElementById('annTitle').value.trim();
+  var body=document.getElementById('annBody').value.trim();
+  var pin=document.getElementById('annPin').checked;
+  var imp=document.getElementById('annImportant').checked;
+  var fi=document.getElementById('annFile');
+  var status=document.getElementById('annStatus');
+  var chosen=(fi && fi.files)?Array.prototype.slice.call(fi.files):[];
+  if(!title && !body && !chosen.length){ toast('Write an update or attach a file.'); return; }
+  if(chosen.length>6){ toast('You can attach up to 6 files per update.'); return; }
+  // Size guards: 4 MB each, ~10 MB total (keeps the request under the 15 MB server limit after base64).
+  var total=0;
+  for(var i=0;i<chosen.length;i++){
+    if(chosen[i].size>4*1024*1024){ toast('"'+chosen[i].name+'" is over 4 MB.'); return; }
+    total+=chosen[i].size;
+  }
+  if(total>10*1024*1024){ toast('Total attachment size is too large (keep it under 10 MB).'); return; }
+  var doPost=function(filesPayload){
+    status.textContent='Publishing...';
+    api('/api/announcements',{method:'POST',body:{title:title,body:body,pinned:pin,important:imp,files:filesPayload}})
+      .then(function(){
+        status.textContent=''; toast('Update published to all residents. ✅');
+        document.getElementById('annTitle').value=''; document.getElementById('annBody').value='';
+        document.getElementById('annPin').checked=false; document.getElementById('annImportant').checked=false; if(fi) fi.value=''; annFilesChanged();
+        loadAnnouncements();
+      }).catch(function(e){ status.textContent=''; toastErr(e); });
+  };
+  if(chosen.length){
+    status.textContent='Uploading '+chosen.length+' file'+(chosen.length===1?'':'s')+'...';
+    Promise.all(chosen.map(function(f){
+      return fileToDataUrl(f).then(function(dataUrl){ return {name:f.name, type:f.type, dataUrl:dataUrl}; });
+    })).then(function(filesPayload){ doPost(filesPayload); })
+      .catch(function(e){ status.textContent=''; toastErr(e); });
+  } else {
+    doPost([]);
+  }
+}
+function annFilesChanged(){
+  var fi=document.getElementById('annFile');
+  var out=document.getElementById('annFileList');
+  if(!out) return;
+  var chosen=(fi && fi.files)?Array.prototype.slice.call(fi.files):[];
+  if(!chosen.length){ out.textContent=''; return; }
+  var total=0; chosen.forEach(function(f){ total+=f.size; });
+  out.textContent=chosen.length+' file'+(chosen.length===1?'':'s')+' selected · '+(total/1048576).toFixed(1)+' MB total · '+chosen.map(function(f){return f.name;}).join(', ');
+}
+function delAnnouncement(id){
+  if(!confirm('Delete this update?')) return;
+  api('/api/announcements/'+id,{method:'DELETE'}).then(function(){ toast('Update deleted.'); loadAnnouncements(); }).catch(toastErr);
+}
+function openAnnEdit(id){
+  var a=null;
+  for(var i=0;i<announcements.length;i++){ if(announcements[i].id===id){ a=announcements[i]; break; } }
+  if(!a) return;
+  document.getElementById('annEditId').value=a.id;
+  document.getElementById('annEditTitle').value=a.title||'';
+  document.getElementById('annEditBody').value=a.body||'';
+  document.getElementById('annEditPin').checked=!!a.pinned;
+  document.getElementById('annEditImportant').checked=!!a.important;
+  var fi=document.getElementById('annEditFile'); if(fi) fi.value='';
+  var fl=document.getElementById('annEditFileList'); if(fl) fl.textContent='';
+  var cur=document.getElementById('annEditCurrent');
+  var files=(a.files&&a.files.length)?a.files:(a.file?[a.file]:[]);
+  if(cur) cur.textContent = files.length ? ('Current attachments ('+files.length+'): '+files.map(function(f){return f.name;}).join(', ')) : 'No attachments yet.';
+  var st=document.getElementById('annEditStatus'); if(st) st.textContent='';
+  var bg=document.getElementById('annEditBg'); bg.classList.remove('hidden'); bg.style.display='flex'; document.body.style.overflow='hidden';
+}
+function closeAnnEdit(){ var bg=document.getElementById('annEditBg'); if(bg){ bg.classList.add('hidden'); bg.style.display='none'; } document.body.style.overflow=''; }
+function annEditFilesChanged(){
+  var fi=document.getElementById('annEditFile');
+  var out=document.getElementById('annEditFileList');
+  if(!out) return;
+  var chosen=(fi&&fi.files)?Array.prototype.slice.call(fi.files):[];
+  if(!chosen.length){ out.textContent=''; return; }
+  var total=0; chosen.forEach(function(f){ total+=f.size; });
+  out.textContent='Will replace with '+chosen.length+' file'+(chosen.length===1?'':'s')+' · '+(total/1048576).toFixed(1)+' MB · '+chosen.map(function(f){return f.name;}).join(', ');
+}
+function saveAnnEdit(){
+  var id=document.getElementById('annEditId').value;
+  var title=document.getElementById('annEditTitle').value.trim();
+  var body=document.getElementById('annEditBody').value.trim();
+  var pin=document.getElementById('annEditPin').checked;
+  var imp=document.getElementById('annEditImportant').checked;
+  var fi=document.getElementById('annEditFile');
+  var status=document.getElementById('annEditStatus');
+  var chosen=(fi&&fi.files)?Array.prototype.slice.call(fi.files):[];
+  if(!title && !body){ toast('Write a title or a message.'); return; }
+  if(chosen.length>6){ toast('You can attach up to 6 files.'); return; }
+  var total=0;
+  for(var i=0;i<chosen.length;i++){
+    if(chosen[i].size>4*1024*1024){ toast('"'+chosen[i].name+'" is over 4 MB.'); return; }
+    total+=chosen[i].size;
+  }
+  if(total>10*1024*1024){ toast('Total attachment size is too large (keep it under 10 MB).'); return; }
+  var doSave=function(filesPayload){
+    status.textContent='Saving...';
+    var payload={title:title,body:body,pinned:pin,important:imp};
+    if(filesPayload) payload.files=filesPayload; // only replace attachments when new files are chosen
+    api('/api/announcements/'+id,{method:'PUT',body:payload})
+      .then(function(){ status.textContent=''; toast('Update saved. ✅'); closeAnnEdit(); loadAnnouncements(); })
+      .catch(function(e){ status.textContent=''; toastErr(e); });
+  };
+  if(chosen.length){
+    status.textContent='Uploading '+chosen.length+' file'+(chosen.length===1?'':'s')+'...';
+    Promise.all(chosen.map(function(f){
+      return fileToDataUrl(f).then(function(dataUrl){ return {name:f.name, type:f.type, dataUrl:dataUrl}; });
+    })).then(function(filesPayload){ doSave(filesPayload); })
+      .catch(function(e){ status.textContent=''; toastErr(e); });
+  } else {
+    doSave(null); // keep existing attachments
+  }
+}
+function acknowledgeAnnouncement(id){
+  api('/api/announcements/'+id+'/acknowledge',{method:'POST'})
+    .then(function(){ toast('Thank you — your acknowledgment was recorded. ✅'); loadAnnouncements(); })
+    .catch(toastErr);
+}
+
+/* ---------------- Photo lightbox (click transitions) ---------------- */
+var lbItems=[], lbIndex=0;
+(function(){
+  var g=document.getElementById('gallerySection');
+  if(!g) return;
+  g.addEventListener('click', function(e){
+    var t=e.target; if(!t || t.tagName!=='IMG') return;
+    var imgs=Array.prototype.slice.call(g.querySelectorAll('img'));
+    var i=imgs.indexOf(t); if(i<0) return;
+    lbItems=imgs.map(function(im){ return {src:im.src, alt:im.alt||''}; });
+    var bg=document.getElementById('lightboxBg');
+    bg.classList.remove('hidden'); bg.style.display='flex'; document.body.style.overflow='hidden';
+    lbShow(i);
+  });
+})();
+function lbShow(i){
+  if(!lbItems.length) return;
+  lbIndex=((i % lbItems.length)+lbItems.length)%lbItems.length;
+  var fig=document.getElementById('lbFigure');
+  fig.style.animation='none'; void fig.offsetWidth; fig.style.animation=''; // re-trigger zoom
+  var img=document.getElementById('lbImg');
+  img.src=lbItems[lbIndex].src; img.alt=lbItems[lbIndex].alt;
+  document.getElementById('lbCap').textContent=lbItems[lbIndex].alt;
+  document.getElementById('lbCount').textContent='Photo '+(lbIndex+1)+' of '+lbItems.length;
+}
+function lbStep(d){ lbShow(lbIndex+d); }
+function closeLightbox(){ var bg=document.getElementById('lightboxBg'); if(bg){ bg.classList.add('hidden'); bg.style.display='none'; } document.body.style.overflow=''; }
+
+/* ---------------- Events & important dates ---------------- */
+var events = [];
+function parseEventDate(d){
+  var parts=(d||'').split('-'); if(parts.length!==3) return null;
+  return new Date(+parts[0], +parts[1]-1, +parts[2]);
+}
+function fmtEventDate(d){
+  var dt=parseEventDate(d); if(!dt) return d||'';
+  return dt.toLocaleDateString(undefined,{weekday:'short', day:'numeric', month:'short', year:'numeric'});
+}
+function loadEvents(){
+  api('/api/events').then(function(d){ events=d.events||[]; renderEvents(); }).catch(function(){ /* optional */ });
+}
+function renderEvents(){
+  var el=document.getElementById('eventsList');
+  var empty=document.getElementById('eventsEmpty');
+  if(!el) return;
+  el.innerHTML='';
+  var form=document.getElementById('eventForm');
+  if(form){ if(role==='overseer') form.classList.remove('hidden'); else form.classList.add('hidden'); }
+  if(!events.length){ if(empty) empty.classList.remove('hidden'); return; }
+  if(empty) empty.classList.add('hidden');
+  var today=new Date(); today.setHours(0,0,0,0);
+  events.forEach(function(ev){
+    var dt=parseEventDate(ev.date);
+    var isPast = dt && dt < today;
+    var diffDays = dt ? Math.round((dt - today)/86400000) : null;
+    var badge='';
+    if(diffDays===0) badge='<span class="tag" style="background:#fff3e0;color:#e65100;">Today</span>';
+    else if(diffDays===1) badge='<span class="tag" style="background:#fff3e0;color:#e65100;">Tomorrow</span>';
+    else if(diffDays>1 && diffDays<=7) badge='<span class="tag" style="background:#e3f2fd;color:#0d47a1;">In '+diffDays+' days</span>';
+    else if(isPast) badge='<span class="tag" style="background:#eef2f0;color:var(--muted);">Past</span>';
+    var del=(role==='overseer')?'<button class="btn danger sm" onclick="delEvent(\''+ev.id+'\')">Delete</button>':'';
+    var dayNum = dt ? dt.getDate() : '';
+    var mon = dt ? dt.toLocaleDateString(undefined,{month:'short'}) : '';
+    el.innerHTML += '<div class="report" style="display:flex;gap:14px;align-items:flex-start;'+(isPast?'opacity:.62;':'')+'">'
+      + '<div style="flex:0 0 auto;text-align:center;background:var(--green-l);border:1px solid #c9e5d4;border-radius:10px;padding:8px 10px;min-width:56px;">'
+      + '<div style="font-size:20px;font-weight:800;color:var(--green-d);line-height:1;">'+dayNum+'</div>'
+      + '<div style="font-size:11px;color:var(--green-d);text-transform:uppercase;">'+mon+'</div></div>'
+      + '<div style="flex:1 1 auto;">'
+      + '<div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center;"><b>'+esc(ev.title)+'</b> '+badge+'</div>'
+      + '<div class="hint" style="margin:2px 0 0;">'+fmtEventDate(ev.date)+(ev.time?' · '+esc(ev.time):'')+'</div>'
+      + (ev.body?'<p style="margin:6px 0 0;white-space:pre-wrap;">'+esc(ev.body)+'</p>':'')
+      + (del?'<div class="actions" style="margin-top:8px;">'+del+'</div>':'')
+      + '</div></div>';
+  });
+}
+function postEvent(){
+  var title=document.getElementById('evTitle').value.trim();
+  var date=document.getElementById('evDate').value;
+  var time=document.getElementById('evTime').value;
+  var body=document.getElementById('evBody').value.trim();
+  var status=document.getElementById('evStatus');
+  if(!title){ toast('Give the event a title.'); return; }
+  if(!date){ toast('Pick a date for the event.'); return; }
+  status.textContent='Adding...';
+  api('/api/events',{method:'POST',body:{title:title,date:date,time:time,body:body}})
+    .then(function(){ status.textContent=''; toast('Event added. ✅');
+      document.getElementById('evTitle').value=''; document.getElementById('evDate').value='';
+      document.getElementById('evTime').value=''; document.getElementById('evBody').value='';
+      loadEvents(); }).catch(function(e){ status.textContent=''; toastErr(e); });
+}
+function delEvent(id){
+  if(!confirm('Delete this event?')) return;
+  api('/api/events/'+id,{method:'DELETE'}).then(function(){ toast('Event deleted.'); loadEvents(); }).catch(toastErr);
+}
+
+/* ---------------- Polls / quick votes ---------------- */
+var polls = [];
+function loadPolls(){
+  api('/api/polls').then(function(d){ polls=d.polls||[]; renderPolls(); }).catch(function(){ /* optional */ });
+}
+function addPollOpt(){
+  var box=document.getElementById('pollOptions');
+  if(box.getElementsByTagName('input').length>=6){ toast('Maximum 6 options.'); return; }
+  var inp=document.createElement('input');
+  inp.type='text'; inp.className='pollOpt'; inp.maxLength=80;
+  inp.placeholder='Option '+(box.getElementsByTagName('input').length+1);
+  inp.style.marginBottom='6px';
+  box.appendChild(inp);
+}
+function renderPolls(){
+  var el=document.getElementById('pollsList');
+  var empty=document.getElementById('pollsEmpty');
+  if(!el) return;
+  el.innerHTML='';
+  var form=document.getElementById('pollForm');
+  if(form){ if(role==='overseer') form.classList.remove('hidden'); else form.classList.add('hidden'); }
+  if(!polls.length){ if(empty) empty.classList.remove('hidden'); return; }
+  if(empty) empty.classList.add('hidden');
+  var isStudent=(role==='student');
+  polls.forEach(function(p){
+    var total=p.total||0;
+    var canVote = isStudent && !p.closed && p.votedOption<0;
+    var opts='';
+    (p.options||[]).forEach(function(text,i){
+      var count=(p.counts&&p.counts[i])||0;
+      var pct = total? Math.round(count/total*100):0;
+      var mine = (p.votedOption===i);
+      if(canVote){
+        opts += '<button class="btn ghost" style="display:block;width:100%;text-align:left;margin-bottom:6px;" onclick="votePoll(\''+p.id+'\','+i+')">'+esc(text)+'</button>';
+      } else {
+        opts += '<div style="margin-bottom:8px;">'
+          + '<div style="display:flex;justify-content:space-between;gap:8px;font-size:13.5px;margin-bottom:3px;">'
+          + '<span>'+(mine?'<span class="tag done">✔ Your vote</span> ':'')+esc(text)+'</span>'
+          + '<span class="hint" style="margin:0;">'+count+' · '+pct+'%</span></div>'
+          + '<div style="height:8px;background:var(--green-l);border-radius:99px;overflow:hidden;">'
+          + '<div style="height:100%;width:'+pct+'%;background:'+(mine?'var(--gold)':'var(--green)')+';"></div></div></div>';
+      }
+    });
+    var status = p.closed ? '<span class="tag" style="background:#eef2f0;color:var(--muted);">Closed</span>' : '<span class="tag done">Open</span>';
+    var mgr='';
+    if(role==='overseer'){
+      mgr='<div class="actions" style="margin-top:8px;">'
+        + '<button class="btn ghost sm" onclick="togglePoll(\''+p.id+'\','+(p.closed?'false':'true')+')">'+(p.closed?'Reopen':'Close')+'</button> '
+        + '<button class="btn danger sm" onclick="delPoll(\''+p.id+'\')">Delete</button></div>';
+    }
+    var foot = canVote ? 'Tap an option to vote.' : (total+' vote'+(total===1?'':'s')+(p.closed?' · poll closed':''));
+    el.innerHTML += '<div class="report"><div class="top"><div><b>'+esc(p.question)+'</b> '+status+'</div>'
+      + '<span class="when">'+new Date(p.date).toLocaleDateString()+'</span></div>'
+      + '<div style="margin-top:10px;">'+opts+'</div>'
+      + '<div class="hint" style="margin-top:4px;">'+foot+'</div>'
+      + mgr + '</div>';
+  });
+}
+function postPoll(){
+  var q=document.getElementById('pollQ').value.trim();
+  var opts=[];
+  var inputs=document.getElementById('pollOptions').getElementsByTagName('input');
+  for(var i=0;i<inputs.length;i++){ var v=inputs[i].value.trim(); if(v) opts.push(v); }
+  var status=document.getElementById('pollStatus');
+  if(!q){ toast('Write a question for the poll.'); return; }
+  if(opts.length<2){ toast('Add at least two answer options.'); return; }
+  status.textContent='Posting...';
+  api('/api/polls',{method:'POST',body:{question:q,options:opts}})
+    .then(function(){ status.textContent=''; toast('Poll posted. ✅');
+      document.getElementById('pollQ').value='';
+      document.getElementById('pollOptions').innerHTML='<input class="pollOpt" type="text" maxlength="80" placeholder="Option 1" style="margin-bottom:6px;"><input class="pollOpt" type="text" maxlength="80" placeholder="Option 2" style="margin-bottom:6px;">';
+      loadPolls(); }).catch(function(e){ status.textContent=''; toastErr(e); });
+}
+function votePoll(id, idx){
+  api('/api/polls/'+id+'/vote',{method:'POST',body:{option:idx}})
+    .then(function(){ toast('Vote counted. ✅'); loadPolls(); }).catch(toastErr);
+}
+function togglePoll(id, closed){
+  api('/api/polls/'+id,{method:'PUT',body:{closed:closed}})
+    .then(function(){ toast(closed?'Poll closed.':'Poll reopened.'); loadPolls(); }).catch(toastErr);
+}
+function delPoll(id){
+  if(!confirm('Delete this poll?')) return;
+  api('/api/polls/'+id,{method:'DELETE'}).then(function(){ toast('Poll deleted.'); loadPolls(); }).catch(toastErr);
+}
+
+/* ---------------- Lost & Found ---------------- */
+var lostfound = [];
+function loadLostFound(){
+  api('/api/lostfound').then(function(d){ lostfound=d.items||[]; renderLostFound(); }).catch(function(){ /* optional */ });
+}
+function renderLostFound(){
+  var el=document.getElementById('lostfoundList');
+  var empty=document.getElementById('lostfoundEmpty');
+  if(!el) return;
+  el.innerHTML='';
+  var form=document.getElementById('lfForm');
+  if(form){ if(role==='overseer') form.classList.remove('hidden'); else form.classList.add('hidden'); }
+  if(!lostfound.length){ if(empty) empty.classList.remove('hidden'); return; }
+  if(empty) empty.classList.add('hidden');
+  lostfound.forEach(function(it){
+    var returned = it.status==='returned';
+    var badge = returned ? '<span class="tag" style="background:#eef2f0;color:var(--muted);">Returned</span>' : '<span class="tag done">Available</span>';
+    var cat = it.category ? ' <span class="tag" style="background:var(--blue-l);color:var(--blue);">'+esc(it.category)+'</span>' : '';
+    var mgr='';
+    if(role==='overseer'){
+      mgr='<div class="actions" style="margin-top:8px;">'
+        + '<button class="btn ghost sm" onclick="toggleLostStatus(\''+it.id+'\','+(returned?'false':'true')+')">'+(returned?'Mark available':'Mark returned')+'</button> '
+        + '<button class="btn danger sm" onclick="delLostItem(\''+it.id+'\')">Delete</button></div>';
+    }
+    el.innerHTML += '<div class="report" style="'+(returned?'opacity:.7;':'')+'"><div class="top"><div><b>'+esc(it.title)+'</b> '+badge+cat+'</div>'
+      + '<span class="when">'+new Date(it.date).toLocaleDateString()+'</span></div>'
+      + (it.foundAt?'<div class="hint" style="margin:4px 0 0;">📍 Found: '+esc(it.foundAt)+'</div>':'')
+      + (it.details?'<p style="margin:6px 0 0;white-space:pre-wrap;">'+esc(it.details)+'</p>':'')
+      + (returned?'':'<div class="hint" style="margin-top:6px;">Is this yours? Contact the Overseer to claim it.</div>')
+      + mgr + '</div>';
+  });
+}
+function postLostItem(){
+  var title=document.getElementById('lfTitle').value.trim();
+  var category=document.getElementById('lfCategory').value;
+  var foundAt=document.getElementById('lfFoundAt').value.trim();
+  var details=document.getElementById('lfDetails').value.trim();
+  var status=document.getElementById('lfStatus');
+  if(!title){ toast('Give the item a short title.'); return; }
+  status.textContent='Adding...';
+  api('/api/lostfound',{method:'POST',body:{title:title,category:category,foundAt:foundAt,details:details}})
+    .then(function(){ status.textContent=''; toast('Item logged. ✅');
+      document.getElementById('lfTitle').value=''; document.getElementById('lfFoundAt').value='';
+      document.getElementById('lfDetails').value=''; document.getElementById('lfCategory').value='Other';
+      loadLostFound(); }).catch(function(e){ status.textContent=''; toastErr(e); });
+}
+function toggleLostStatus(id, returned){
+  api('/api/lostfound/'+id,{method:'PUT',body:{status: returned?'returned':'listed'}})
+    .then(function(){ toast(returned?'Marked as returned.':'Marked as available.'); loadLostFound(); }).catch(toastErr);
+}
+function delLostItem(id){
+  if(!confirm('Delete this item?')) return;
+  api('/api/lostfound/'+id,{method:'DELETE'}).then(function(){ toast('Item deleted.'); loadLostFound(); }).catch(toastErr);
+}
+
+/* ---------------- Reviews ---------------- */
+var reviews = [];
+var currentRating = 0;
+
+function setRating(n){
+  currentRating = n;
+  var box = document.getElementById('starInput');
+  var stars = box.getElementsByTagName('span');
+  for(var i=0;i<stars.length;i++){
+    stars[i].textContent = i < n ? '★' : '☆';
+  }
+  document.getElementById('ratingLabel').textContent = n + ' star' + (n===1?'':'s');
+}
+function hideRevErr(){ document.getElementById('revError').classList.add('hidden'); }
+
+function starHtml(n){
+  var out = '';
+  for(var i=1;i<=5;i++){ out += i<=n ? '★' : '☆'; }
+  return out;
+}
+
+function loadReviews(){
+  api('/api/reviews').then(function(d){
+    reviews = d.reviews;
+    document.getElementById('avgRating').textContent = d.average;
+    document.getElementById('avgStars').textContent = starHtml(Math.round(d.average));
+    document.getElementById('avgCount').textContent = 'based on ' + d.count + ' review' + (d.count===1?'':'s');
+    var el = document.getElementById('reviewsList');
+    var empty = document.getElementById('reviewsEmpty');
+    el.innerHTML = '';
+    if(!reviews.length){ empty.classList.remove('hidden'); return; }
+    empty.classList.add('hidden');
+    reviews.forEach(function(r){
+      var when = new Date(r.date).toLocaleDateString();
+      var del = (role==='overseer') ? '<button class="btn danger sm" onclick="delReview(\''+r.id+'\')">Delete</button>' : '';
+      el.innerHTML += '<div class="report"><div class="top">'
+        + '<div><span class="tag done">'+starHtml(r.rating)+'</span></div>'
+        + '<span class="when">'+when+'</span></div>'
+        + '<div class="who">'+esc(r.name)+'</div>'
+        + '<p>'+esc(r.comment)+'</p>'
+        + (del ? '<div class="actions" style="margin-top:6px;">'+del+'</div>' : '')
+        + '</div>';
+    });
+  }).catch(toastErr);
+}
+
+function submitReview(){
+  hideRevErr();
+  var comment = document.getElementById('revComment').value.trim();
+  if(!currentRating){ showRevErr('Please select a star rating (1–5).'); return; }
+  if(!comment){ showRevErr('Please write a short comment.'); return; }
+  api('/api/reviews', { method:'POST', body:{ rating: currentRating, comment: comment } })
+    .then(function(){
+      toast('Thank you for your review! ⭐');
+      document.getElementById('revComment').value='';
+      setRating(0);
+      document.getElementById('ratingLabel').textContent = 'Select 1–5 stars';
+      try{ if(me&&me.reg) localStorage.setItem('stuRated_'+me.reg,'1'); }catch(e){}
+      dismissRateNudge();
+      loadReviews();
+    }).catch(function(err){ showRevErr(err.message); });
+}
+function showRevErr(msg){ var e=document.getElementById('revError'); e.textContent=msg; e.classList.remove('hidden'); }
+function delReview(id){
+  if(!confirm('Delete this review?')) return;
+  api('/api/reviews/'+id,{method:'DELETE'}).then(loadReviews).catch(toastErr);
+}
+
+/* ---------------- Overseer: change password ---------------- */
+document.getElementById('changePassForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  api('/api/overseer/password',{method:'PUT',body:{current:val('curPass'),next:val('newPass')}})
+    .then(function(){ toast('Password changed.'); document.getElementById('changePassForm').reset(); })
+    .catch(toastErr);
+});
+
+/* ---------------- Data-size alert (overseer bar) ---------------- */
+function formatBytes(n){
+  if(n > 1048576) return (n/1048576).toFixed(2)+' MB';
+  if(n > 1024) return (n/1024).toFixed(0)+' KB';
+  return n+' B';
+}
+function checkDataAlert(){
+  if(role!=='overseer' || !token) return;
+  api('/api/admin/datastats').then(function(d){
+    var b = document.getElementById('dataAlertBanner');
+    if(!b) return;
+    if(d.over){
+      b.classList.remove('hidden');
+      b.style.display='block';
+      document.getElementById('dacount').textContent = d.stats.total;
+      document.getElementById('dasize').textContent = formatBytes(d.stats.bytes);
+    } else {
+      b.classList.add('hidden'); b.style.display='none';
+    }
+  }).catch(function(){});
+}
+
+/* ---------------- Database & storage settings ---------------- */
+function loadStorage(){
+  api('/api/admin/storage').then(function(d){
+    var el = document.getElementById('storageStatus');
+    if(!el) return;
+    var mode = d.mode==='mongodb' ? '<span class="tag done">MongoDB Atlas — permanent ✓</span>' : '<span class="tag open">Local file storage</span>';
+    el.innerHTML = '<div class="who-box" style="margin:0;"><div class="lbl">Storage Mode</div><div class="val">' + mode + '</div></div>'
+      + '<div class="hint" style="margin:8px 0 0;">' + (d.mode==='mongodb'
+        ? 'Your data is stored in a cloud database and <b>survives restarts and redeploys</b>.'
+        : 'You are using local storage. For data that is never lost, add a MongoDB connection string below.') + '</div>';
+  }).catch(function(){});
+}
+document.getElementById('dbForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  api('/api/admin/db', { method:'POST', body:{ uri: document.getElementById('dbUri').value.trim() } })
+    .then(function(d){
+      toast(d.mode==='mongodb' ? 'Connected to database. Your data is now permanent. ✅' : 'Using local storage.');
+      showDbTest(false, 'Connected to MongoDB Atlas. Your data is now permanent. ✅', true);
+      loadStorage();
+    }).catch(toastErr);
+});
+function showDbTest(ok, msg, okStyle){
+  var r = document.getElementById('dbTestResult');
+  if(!r) return;
+  r.classList.remove('hidden');
+  r.style.display='block';
+  r.style.background = (okStyle===undefined ? ok : okStyle) ? '#e8f5e9' : '#fbe9e7';
+  r.style.color = (okStyle===undefined ? ok : okStyle) ? '#1b5e20' : '#c0392b';
+  r.style.border = '1px solid ' + ((okStyle===undefined ? ok : okStyle) ? '#b7dfc0' : '#f2c1bb');
+  r.innerHTML = msg;
+}
+function testDbConnection(){
+  var uri = document.getElementById('dbUri').value.trim();
+  if(!uri){ showDbTest(false, 'Enter a connection string first, then click Test.'); return; }
+  showDbTest(false, 'Testing connection…', true);
+  api('/api/admin/db/test', { method:'POST', body:{ uri: uri } })
+    .then(function(){ showDbTest(true, '✅ Connection successful! You can now click "Save &amp; Connect Database" to make your data permanent.'); })
+    .catch(function(err){ showDbTest(false, '❌ Connection failed: ' + (err.message || 'invalid string')); });
+}
+
+/* ---------------- Theme (colours + layout) ---------------- */
+var PALETTES = {
+  green:  { primary:'#0e7a4d', accent:'#c9a227' },
+  ocean:  { primary:'#0f5f8c', accent:'#1fa2c9' },
+  royal:  { primary:'#4a2c8a', accent:'#e0a82e' },
+  crimson:{ primary:'#8c1f28', accent:'#d9a024' },
+  slate:  { primary:'#334155', accent:'#0ea5a4' },
+  midnight:{primary:'#0b2239', accent:'#c9a227' }
+};
+var PALETTE_NAMES = { green:'Emerald', ocean:'Ocean Blue', royal:'Royal Purple', crimson:'Crimson', slate:'Slate', midnight:'Midnight' };
+
+function paletteVars(primary, accent){
+  // derive a darker (d) and light (l) shade from the main colour
+  function shade(hex, p){ // p in 0..1 lighter, - darken uses <0
+    var n=parseInt(hex.slice(1),16), r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+    if(p>=0){ r=Math.round(r+(255-r)*p);g=Math.round(g+(255-g)*p);b=Math.round(b+(255-b)*p); }
+    else{ r=Math.round(r*(1+p));g=Math.round(g*(1+p));b=Math.round(b*(1+p)); }
+    return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+  }
+  return {
+    '--green':primary, '--green-d':shade(primary,-0.25), '--green-l':shade(primary,0.85),
+    '--gold':accent, '--head':"'Segoe UI',system-ui,Arial,sans-serif"
+  };
+}
+// Background gradient colour sets per palette
+function bgGradient(palette, primary, accent){
+  var d=paletteVars(primary,accent);
+  var darker=function(hex){var n=parseInt(hex.slice(1),16),r=(n>>16)&255,g=(n>>8)&255,b=n&255;return '#'+((1<<24)+(Math.round(r*0.6)<<16)+(Math.round(g*0.6)<<8)+Math.round(b*0.6)).toString(16).slice(1);};
+  var c2=darker(primary);
+  return { '--bg1':primary, '--bg2':c2, '--bg3':accent };
+}
+function applyThemeUI(t){
+  t = t || {};
+  var primary = t.primary || PALETTES.green.primary;
+  var accent  = t.accent  || PALETTES.green.accent;
+  var root = document.documentElement;
+  var v = paletteVars(primary,accent);
+  Object.keys(v).forEach(function(k){ root.style.setProperty(k, v[k]); });
+  var g = bgGradient(t.palette, primary, accent);
+  Object.keys(g).forEach(function(k){ root.style.setProperty(k, g[k]); });
+  root.style.setProperty('--radius', (t.radius||14)+'px');
+  root.style.setProperty('--radius-sm', Math.max(4,(t.radius||14)-4)+'px');
+  document.body.setAttribute('data-bg', t.bg==='light'?'light':'gradient');
+  document.body.setAttribute('data-layout', t.layout==='classic'?'classic':'modern');
+  document.body.setAttribute('data-font', t.font==='serif'?'serif':'system');
+}
+function setThemeForm(t){
+  document.getElementById('thPrimary').value = t.primary || '#0e7a4d';
+  document.getElementById('thAccent').value = t.accent || '#c9a227';
+  document.getElementById('thBg').value = t.bg || 'gradient';
+  document.getElementById('thLayout').value = t.layout || 'modern';
+  document.getElementById('thFont').value = t.font || 'system';
+  document.getElementById('thRadius').value = String(t.radius || 14);
+  // highlight chosen palette
+  var names = Object.keys(PALETTES);
+  [].forEach.call(document.querySelectorAll('#palettePicker button'), function(btn,idx){
+    var key = names[idx];
+    btn.style.outline = (t.palette===key)?'3px solid '+((PALETTES[key].primary==='#0b2239')?'#4f8cff':'#000'):'none';
+    btn.style.outlineOffset='2px';
+  });
+}
+function readThemeForm(){
+  // if a palette preset matches current colours, keep its name
+  var key = Object.keys(PALETTES).find(function(k){ return PALETTES[k].primary===document.getElementById('thPrimary').value; });
+  return {
+    palette: key || 'custom',
+    primary: document.getElementById('thPrimary').value,
+    accent:  document.getElementById('thAccent').value,
+    bg:      document.getElementById('thBg').value,
+    layout:  document.getElementById('thLayout').value,
+    font:    document.getElementById('thFont').value,
+    radius:  parseInt(document.getElementById('thRadius').value,10)
+  };
+}
+function loadTheme(refreshForm){
+  api('/api/settings').then(function(d){
+    var t = d.settings.theme || {};
+    if(refreshForm) setThemeForm(t);
+    applyThemeUI(t);
+  }).catch(function(){});
+}
+// build palette colour swatches once
+(function buildPalettePicker(){
+  var box = document.getElementById('palettePicker');
+  if(!box) return;
+  box.innerHTML = Object.keys(PALETTES).map(function(k){
+    return '<button type="button" title="'+PALETTE_NAMES[k]+'" data-pal="'+k+'" style="width:34px;height:34px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3);cursor:pointer;background:linear-gradient(135deg,'+PALETTES[k].primary+' 55%,'+PALETTES[k].accent+');"></button>';
+  }).join('');
+  box.addEventListener('click', function(e){
+    var b = e.target.closest('button[data-pal]'); if(!b) return;
+    var pal = PALETTES[b.getAttribute('data-pal')];
+    document.getElementById('thPrimary').value = pal.primary;
+    document.getElementById('thAccent').value = pal.accent;
+    setThemeForm({ primary:pal.primary, accent:pal.accent, palette:b.getAttribute('data-pal'),
+      bg:document.getElementById('thBg').value, layout:document.getElementById('thLayout').value,
+      font:document.getElementById('thFont').value, radius:parseInt(document.getElementById('thRadius').value,10) });
+  });
+})();
+// live-preview on control change (without saving)
+document.getElementById('themeForm').addEventListener('input', function(){ applyThemeUI(readThemeForm()); });
+document.getElementById('themeForm').addEventListener('change', function(){ applyThemeUI(readThemeForm()); });
+document.getElementById('themeForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  api('/api/settings', { method:'PUT', body:{ settings:{ theme: readThemeForm() }}})
+    .then(function(){ toast('Appearance saved. ✅'); applyThemeUI(readThemeForm()); })
+    .catch(toastErr);
+});
+
+/* ---------------- Site settings (page photo + features) ---------------- */
+var siteSettings = null;
+function applySettings(){
+  api('/api/settings').then(function(d){
+    siteSettings = d.settings;
+    applyThemeUI(siteSettings.theme || {});   // always apply saved theme
+    document.getElementById('homePhoto').src = siteSettings.pagePhoto || 'usambara_08.jpg';
+    document.getElementById('homeTitle').textContent = siteSettings.pageTitle || 'COLLINS UNGUKU USAMBARA HOSTELS';
+    document.getElementById('homeTagline').textContent = siteSettings.tagline || '';
+    var grid = document.getElementById('featuresGrid');
+    if(grid){
+      var feats = (siteSettings.features && siteSettings.features.length) ? siteSettings.features :
+        [{icon:'⭐',title:'Welcome',text:'Explore what Usambara Male Hostels offers.'}];
+      grid.innerHTML = feats.map(function(f){
+        return '<div style="border:1px solid var(--line);border-radius:12px;padding:16px;background:#fbfdfc;transition:transform .3s ease,box-shadow .3s ease;">'
+          + '<div style="font-size:26px;">' + esc(f.icon) + '</div>'
+          + '<div style="font-weight:700;margin:6px 0 3px;color:var(--green-d);">' + esc(f.title) + '</div>'
+          + '<div style="font-size:13px;color:var(--muted);">' + esc(f.text) + '</div></div>';
+      }).join('');
+    }
+    // Hostel Guide / Info Hub (multi-line details)
+    var ihGrid = document.getElementById('infoHubGrid');
+    if(ihGrid){
+      var hub = (siteSettings.infoHub && siteSettings.infoHub.length) ? siteSettings.infoHub : [];
+      ihGrid.innerHTML = hub.map(function(f){
+        return '<div style="border:1px solid var(--line);border-radius:12px;padding:16px;background:#fbfdfc;">'
+          + '<div style="font-size:24px;">' + esc(f.icon) + '</div>'
+          + '<div style="font-weight:800;margin:6px 0 4px;color:var(--green-d);">' + esc(f.title) + '</div>'
+          + '<div style="font-size:13px;color:var(--ink);white-space:pre-wrap;line-height:1.55;">' + esc(f.text) + '</div></div>';
+      }).join('');
+    }
+    renderNotice();
+  }).catch(function(){ /* home works even if settings fail */ });
+}
+// Site-wide urgent notice banner (visible on every page).
+function renderNotice(){
+  var el=document.getElementById('urgentBanner');
+  if(!el) return;
+  var n = siteSettings && siteSettings.urgentNotice;
+  if(n && n.enabled && (n.text||'').trim()){
+    el.innerHTML = '<div class="wrap" style="padding:10px 16px;display:flex;align-items:center;gap:10px;">'
+      + '<span style="font-size:18px;flex:0 0 auto;">📣</span>'
+      + '<b style="flex:1 1 auto;line-height:1.4;">'+esc(n.text)+'</b></div>';
+    el.classList.remove('hidden');
+  } else {
+    el.classList.add('hidden'); el.innerHTML='';
+  }
+}
+function loadSettings(){
+  Promise.all([api('/api/settings'), api('/api/images')]).then(function(r){
+    var s = r[0].settings; siteSettings = s;
+    document.getElementById('setTitle').value = s.pageTitle || '';
+    document.getElementById('setTagline').value = s.tagline || '';
+    var sel = document.getElementById('setPhoto');
+    sel.innerHTML = r[1].images.map(function(f){
+      return '<option value="'+f+'"'+(f===s.pagePhoto?' selected':'')+'>'+f+'</option>';
+    }).join('');
+    var ed = document.getElementById('featuresEditor');
+    ed.innerHTML = (s.features && s.features.length ? s.features : [{icon:'',title:'',text:''}])
+      .map(function(f,i){
+        return '<div style="border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:8px;">'
+          + '<div style="display:flex;gap:8px;">'
+          + '<input type="text" class="f-icon" data-i="'+i+'" value="'+esc(f.icon)+'" style="max-width:70px;" placeholder="Emoji">'
+          + '<input type="text" class="f-title" data-i="'+i+'" value="'+esc(f.title)+'" placeholder="Feature title">'
+          + '</div>'
+          + '<input type="text" class="f-text" data-i="'+i+'" value="'+esc(f.text)+'" style="margin-top:6px;" placeholder="Short description">'
+          + '</div>';
+      }).join('');
+    // add an "add feature" button
+    var addBtn = document.createElement('button');
+    addBtn.type='button'; addBtn.className='btn ghost sm'; addBtn.style.marginTop='4px';
+    addBtn.textContent='+ Add Feature'; addBtn.onclick=function(){
+      var n = ed.querySelectorAll('.f-title').length;
+      ed.insertAdjacentHTML('beforeend','<div style="border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:8px;">'
+        + '<div style="display:flex;gap:8px;"><input type="text" class="f-icon" value="⭐" style="max-width:70px;" placeholder="Emoji">'
+        + '<input type="text" class="f-title" value="" placeholder="Feature title"></div>'
+        + '<input type="text" class="f-text" value="" style="margin-top:6px;" placeholder="Short description"></div>');
+    };
+    ed.appendChild(addBtn);
+    // Hostel Guide / Info Hub editor (multi-line details via textarea)
+    var ihEd = document.getElementById('infoHubEditor');
+    if(ihEd){
+      var ihItems = (s.infoHub && s.infoHub.length) ? s.infoHub : [{icon:'',title:'',text:''}];
+      ihEd.innerHTML = ihItems.map(function(f){
+        return '<div class="ih-row" style="border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:8px;">'
+          + '<div style="display:flex;gap:8px;">'
+          + '<input type="text" class="ih-icon" value="'+esc(f.icon)+'" style="max-width:70px;" placeholder="Emoji">'
+          + '<input type="text" class="ih-title" value="'+esc(f.title)+'" placeholder="Title (e.g. WiFi)">'
+          + '</div>'
+          + '<textarea class="ih-text" rows="3" style="margin-top:6px;width:100%;" placeholder="Details — one item per line">'+esc(f.text)+'</textarea>'
+          + '<button type="button" class="btn danger sm" style="margin-top:6px;" onclick="this.closest(\'.ih-row\').remove()">Remove</button>'
+          + '</div>';
+      }).join('');
+      var ihAdd = document.createElement('button');
+      ihAdd.type='button'; ihAdd.className='btn ghost sm'; ihAdd.style.marginTop='4px';
+      ihAdd.textContent='+ Add Guide Item'; ihAdd.onclick=function(){
+        ihAdd.insertAdjacentHTML('beforebegin','<div class="ih-row" style="border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:8px;">'
+          + '<div style="display:flex;gap:8px;"><input type="text" class="ih-icon" value="📌" style="max-width:70px;" placeholder="Emoji">'
+          + '<input type="text" class="ih-title" value="" placeholder="Title"></div>'
+          + '<textarea class="ih-text" rows="3" style="margin-top:6px;width:100%;" placeholder="Details — one item per line"></textarea>'
+          + '<button type="button" class="btn danger sm" style="margin-top:6px;" onclick="this.closest(\'.ih-row\').remove()">Remove</button></div>');
+      };
+      ihEd.appendChild(ihAdd);
+    }
+    // urgent notice banner fields
+    var n = s.urgentNotice || {};
+    var noEl = document.getElementById('noticeOn'); if(noEl) noEl.checked = !!n.enabled;
+    var ntEl = document.getElementById('noticeText'); if(ntEl) ntEl.value = n.text || '';
+  }).catch(toastErr);
+}
+document.getElementById('siteForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var feats = Array.prototype.map.call(document.querySelectorAll('#featuresEditor .f-title'), function(t){
+    var i = Array.prototype.indexOf.call(document.querySelectorAll('#featuresEditor .f-title'), t);
+    var icons = document.querySelectorAll('#featuresEditor .f-icon');
+    var texts = document.querySelectorAll('#featuresEditor .f-text');
+    return { icon: icons[i] ? icons[i].value : '⭐', title: t.value, text: texts[i] ? texts[i].value : '' };
+  }).filter(function(f){ return f.title.trim(); });
+  var ihTitles = document.querySelectorAll('#infoHubEditor .ih-title');
+  var ihIcons = document.querySelectorAll('#infoHubEditor .ih-icon');
+  var ihTexts = document.querySelectorAll('#infoHubEditor .ih-text');
+  var infoHub = Array.prototype.map.call(ihTitles, function(t){
+    var i = Array.prototype.indexOf.call(ihTitles, t);
+    return { icon: ihIcons[i] ? ihIcons[i].value : '📌', title: t.value, text: ihTexts[i] ? ihTexts[i].value : '' };
+  }).filter(function(f){ return f.title.trim() || f.text.trim(); });
+  api('/api/settings', { method:'PUT', body:{ settings:{
+    pageTitle: val('setTitle'), tagline: val('setTagline'),
+    pagePhoto: document.getElementById('setPhoto').value, features: feats, infoHub: infoHub,
+    urgentNotice: { enabled: document.getElementById('noticeOn').checked, text: document.getElementById('noticeText').value }
+  }}}).then(function(){
+    toast('Page content saved. ✅'); siteSettings=null; applySettings();
+  }).catch(toastErr);
+});
+
+/* ---------------- Restore backup (full restore from JSON) ---------------- */
+function restoreBackup(){
+  document.getElementById('restoreFile').value='';
+  document.getElementById('restoreFile').click();
+}
+function handleRestoreFile(input){
+  var f = input.files && input.files[0];
+  if(!f) return;
+  var rd = new FileReader();
+  rd.onload = function(){
+    var data;
+    try { data = JSON.parse(rd.result); }
+    catch(e){ toast('That file is not a valid backup.'); return; }
+    if(!confirm('Restore ' + (data.students?data.students.length:0) + ' students, ' + (data.reports?data.reports.length:0) + ' reports and ' + (data.reviews?data.reviews.length:0) + ' reviews? This REPLACES the current data.')) return;
+    api('/api/admin/restore', { method:'POST', body: data })
+      .then(function(){ toast('Backup restored. ✅'); loadStudents(); if(loadReports) loadReports(); })
+      .catch(toastErr);
+  };
+  rd.readAsText(f);
+}
+
+/* ---------------- Backup / export ---------------- */
+function backup(){
+  // Full backup: students + reports + reviews + settings (overseer-only endpoint)
+  var ctrl=new AbortController();
+  var timer=setTimeout(function(){ctrl.abort();},API_TIMEOUT);
+  fetch('/api/admin/backup',{headers:{'Authorization':'Bearer '+token},signal:ctrl.signal})
+    .then(function(r){ return r.blob(); })
+    .then(function(blob){ clearTimeout(timer); dl(blob,'usambara-full-backup-'+new Date().toISOString().slice(0,10)+'.json'); })
+    .catch(function(){ clearTimeout(timer); toast('Backup failed. Ensure the server is reachable.'); });
+}
+function exportCSV(){
+  var rows=[['Name','RegNo','Block','Room','Phone','Guardian','GuardianPhone']];
+  students.forEach(function(s){ rows.push([s.name,s.reg,s.block,s.room,s.phone,s.guardian,s.guardianPhone]); });
+  var csv=rows.map(function(r){return r.map(function(c){return '"'+String(c||'').replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  dl(new Blob([csv],{type:'text/csv'}),'usambara-students.csv');
+}
+function dl(blob,file){ var a=document.createElement('a');var u=URL.createObjectURL(blob);a.href=u;a.download=file;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove();},200); }
+
+/* ---------------- Automated email reports + Security Centre ---------------- */
+function fillHourOptions(){
+  var sel=document.getElementById('emHour'); if(!sel||sel.options.length) return;
+  for(var h=0;h<24;h++){ var o=document.createElement('option'); o.value=String(h); o.textContent=(h<10?'0':'')+h+':00'; sel.appendChild(o); }
+}
+function loadEmailConfig(){
+  fillHourOptions();
+  api('/api/admin/email').then(function(d){
+    var c=d.email||{};
+    var toEl=document.getElementById('emTo'); if(toEl) toEl.value=c.to||'leadex44@gmail.com';
+    var schEl=document.getElementById('emSchedule'); if(schEl) schEl.value=c.schedule||'daily';
+    var hrEl=document.getElementById('emHour'); if(hrEl) hrEl.value=String(c.hour!=null?c.hour:18);
+    var enEl=document.getElementById('emEnabled'); if(enEl) enEl.checked=!!c.enabled;
+    var sm=c.smtp||{};
+    var hostEl=document.getElementById('emHost'); if(hostEl) hostEl.value=sm.host||'smtp.gmail.com';
+    var portEl=document.getElementById('emPort'); if(portEl) portEl.value=sm.port||587;
+    var userEl=document.getElementById('emUser'); if(userEl) userEl.value=sm.user||'';
+    var passEl=document.getElementById('emPass'); if(passEl){ passEl.value=''; passEl.placeholder = sm.pass ? 'Saved — type a new one to change' : '16-letter app password'; }
+    var last=document.getElementById('emLast');
+    if(last) last.textContent = c.lastSentAt ? ('Last report sent: '+new Date(c.lastSentAt).toLocaleString()) : (sm.configured ? 'SMTP connected — no report sent yet.' : 'SMTP not configured yet — add your Gmail app password above.');
+  }).catch(function(){ /* panel optional */ });
+}
+function saveEmailConfig(){
+  var st=document.getElementById('emStatus'); if(st) st.textContent='Saving...';
+  var body={
+    to:(document.getElementById('emTo').value||'').trim(),
+    schedule:document.getElementById('emSchedule').value,
+    hour:parseInt(document.getElementById('emHour').value,10),
+    enabled:document.getElementById('emEnabled').checked,
+    smtp:{ host:(document.getElementById('emHost').value||'').trim(), port:parseInt(document.getElementById('emPort').value,10)||587, secure:false, user:(document.getElementById('emUser').value||'').trim() }
+  };
+  var pw=document.getElementById('emPass').value;
+  if(pw && pw!=='••••••••') body.smtp.pass=pw;
+  api('/api/admin/email',{method:'PUT',body:body}).then(function(){
+    if(st) st.textContent=''; toast('Email settings saved. ✅'); loadEmailConfig();
+  }).catch(function(e){ if(st) st.textContent=''; toastErr(e); });
+}
+function testEmailNow(){
+  var st=document.getElementById('emStatus'); if(st) st.textContent='Sending test...';
+  api('/api/admin/email/test',{method:'POST'}).then(function(d){
+    if(st) st.textContent=''; toast('Test email sent to '+d.sentTo+' 📧');
+  }).catch(function(e){ if(st) st.textContent=''; toastErr(e); });
+}
+function loadSecurity(){
+  var g=document.getElementById('securityGrid'); if(!g) return;
+  api('/api/admin/security').then(function(d){
+    var s=d.security||{};
+    var items=[
+      ['🔐 Password hashing', s.passwordHashing],
+      ['🧱 Security headers', s.securityHeaders?'Active on every response':'—'],
+      ['⏱️ API rate limiting', s.apiRateLimit],
+      ['🚫 Login lockout', s.loginLockout],
+      ['📁 File guard', s.staticFileGuard?'Config & backups hidden from the web':'—'],
+      ['🗄️ Uploads', s.filesStoredInDb?'Stored in database (survives restarts)':'—'],
+      ['🕵️ Student privacy', s.studentPrivacy],
+      ['🔑 Active sessions', (s.sessionsActive!=null?s.sessionsActive:'—')+' device(s) signed in'],
+      ['☁️ Storage', s.storage],
+      ['🔒 In transit', s.tls],
+      ['📸 Backups', s.backups]
+    ];
+    g.innerHTML=items.map(function(it){
+      return '<div style="border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fbfdfc;">'
+        + '<div style="font-size:11.5px;font-weight:800;color:var(--green-d);text-transform:uppercase;letter-spacing:.5px;">'+it[0]+'</div>'
+        + '<div style="font-size:13px;color:var(--ink);margin-top:4px;">✅ '+esc(it[1])+'</div></div>';
+    }).join('');
+  }).catch(function(){ /* panel optional */ });
+}
+function revokeSessions(){
+  if(!confirm('Sign out every other device (all student and overseer sessions except this one)?')) return;
+  api('/api/admin/sessions/revoke',{method:'POST'}).then(function(d){ toast('Signed out '+d.revoked+' other session(s). 🔒'); }).catch(toastErr);
+}
+
+/* ---------------- Automatic snapshots / Data Safety ---------------- */
+var snapshots = [];
+function loadSnapshots(){
+  var status=document.getElementById('backupStatus');
+  api('/api/admin/snapshots').then(function(d){
+    snapshots=d.snapshots||[];
+    var mode=(d.mode==='mongodb')?'MongoDB Atlas (permanent)':'local JSON file';
+    var last=d.lastDate?new Date(d.lastDate).toLocaleString():'none yet';
+    if(status) status.innerHTML='Storage: <b>'+esc(mode)+'</b> · Auto-backup: <b>every '+esc(d.autoEveryHours||6)+' hours</b> · Last snapshot: <b>'+esc(last)+'</b> · Keeping: <b>'+(d.count||0)+'</b>';
+    renderSnapshots();
+  }).catch(function(){ if(status) status.textContent='Could not load backup status.'; });
+}
+function renderSnapshots(){
+  var el=document.getElementById('snapshotsList');
+  var empty=document.getElementById('snapshotsEmpty');
+  if(!el) return;
+  el.innerHTML='';
+  if(!snapshots.length){ if(empty) empty.classList.remove('hidden'); return; }
+  if(empty) empty.classList.add('hidden');
+  snapshots.forEach(function(s){
+    var c=s.counts||{};
+    var when=s.date?new Date(s.date).toLocaleString():'';
+    var summary=(c.students||0)+' students · '+(c.reports||0)+' reports · '+(c.reviews||0)+' reviews';
+    if((c.events||0)||(c.polls||0)) summary+=' · '+(c.events||0)+' events · '+(c.polls||0)+' polls';
+    el.innerHTML += '<div class="report"><div class="top"><div><b>📸 '+esc(when)+'</b></div>'
+      + '<span class="when">'+esc(summary)+'</span></div>'
+      + '<div class="actions" style="margin-top:8px;"><button class="btn ghost sm" onclick="restoreSnapshot(\''+esc(s.id)+'\')">↩️ Restore this snapshot</button></div></div>';
+  });
+}
+function snapshotNow(){
+  api('/api/admin/snapshots',{method:'POST'}).then(function(){ toast('Snapshot saved. ✅'); loadSnapshots(); }).catch(toastErr);
+}
+function restoreSnapshot(id){
+  if(!confirm('Restore this snapshot? It REPLACES the current students, reports, reviews, events, polls and settings with the backup contents.')) return;
+  api('/api/admin/snapshots/'+encodeURIComponent(id)+'/restore',{method:'POST'})
+    .then(function(d){ toast('Snapshot restored ('+(d.count||0)+' students). ✅'); loadStudents(); loadSnapshots(); if(typeof loadReports==='function') loadReports(); })
+    .catch(toastErr);
+}
+
+/* ---------------- Utils ---------------- */
+function jumpTo(id){ var el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(function(){t.classList.remove('show');},2400); }
+function toastErr(err){ toast(err.message||'Something went wrong'); }
+
+/* ================= Collo AI assistant (knowledge-based chatbot) ================= */
+var collo = {
+  name: 'Collo AI', enabled: true, aiEnabled: false, visibility: 'overseer',
+  greeting: "Hi comrade! 👋 I'm Collo AI, your hostel assistant. Ask me anything!",
+  fallback: "I'm not sure about that one, comrade. 🙏 Ask me about reporting a problem, the Overseer & WhatsApp, rooms/blocks, or signing in — or tap the green WhatsApp button for the Overseer.",
+  faq: [], hist: []
+};
+function colloFillTemplate(t){ return String(t||'').split('{Overseer}').join(OVERSEER_NAME).split('{WA}').join(OVERSEER_DISPLAY); }
+function colloLoad(){
+  // 1) load the trained knowledge base + greeting + visibility
+  var p1 = api('/api/settings').then(function(d){
+    var cb = (d.settings && d.settings.chatbot) || {};
+    collo.name = cb.name || 'Collo AI';
+    collo.enabled = cb.enabled !== false;
+    collo.visibility = (cb.visibility === 'everyone' || cb.visibility === 'off') ? cb.visibility : 'overseer';
+    collo.greeting = colloFillTemplate(cb.greeting || collo.greeting);
+    collo.fallback = colloFillTemplate(cb.fallback || collo.fallback);
+    collo.faq = (cb.faq || []).map(function(f){ return { q:f.q, a:colloFillTemplate(f.a) }; });
+  }).catch(function(){});
+  // 2) check whether the real AI (Gemini) is connected on the server
+  var p2 = api('/api/ai/status').then(function(d){ collo.aiEnabled = !!(d && d.enabled); }).catch(function(){ collo.aiEnabled=false; });
+  return Promise.all([p1, p2]).then(function(){ refreshColloFab(); }).catch(function(){ refreshColloFab(); });
+}
+// Show/hide the chat bubble based on who is viewing + the overseer's setting.
+function refreshColloFab(){
+  var fab = document.getElementById('colloFab');
+  var hint = document.getElementById('colloLaunchHint');
+  if(!fab) return;
+  var show;
+  if(collo.visibility === 'off' || collo.enabled === false) show = false;
+  else if(collo.visibility === 'everyone') show = true;
+  else show = (role === 'overseer'); // default: only the Overseer
+  if(show){ fab.classList.remove('hidden'); fab.style.display='flex'; }
+  else    { fab.classList.add('hidden'); fab.style.display='none';
+    var w = document.getElementById('colloWindow'); if(w) w.classList.add('hidden');
+    if(hint) hint.classList.add('hidden'); }
+}
+// Called whenever the login state changes, so visibility follows the user.
+function colloAfterAuth(){ colloLoad(); }
+function colloOpen(){
+  var w = document.getElementById('colloWindow');
+  document.getElementById('colloLaunchHint').classList.add('hidden');
+  var open = !w.classList.contains('hidden');
+  if(!open){
+    w.classList.remove('hidden');
+    var msgs = document.getElementById('colloMsgs');
+    if(!msgs.children.length){
+      addColloMsg('bot', collo.greeting, true);
+      addChips();
+    }
+    document.getElementById('colloInput').focus();
+  } else {
+    w.classList.add('hidden');
+  }
+}
+function colloToggle(){ colloLoad().then(colloOpen); }
+// ensure a fresh "enabled" quick path even if colloLoad fails
+function colloEnsureLoaded(){ return colloLoad(); }
+function addColloMsg(who, text, immediate){
+  var m = document.createElement('div');
+  m.className = 'cmsg ' + who;
+  m.textContent = text;
+  document.getElementById('colloMsgs').appendChild(m);
+  colloScroll();
+}
+function colloScroll(){ var box=document.getElementById('colloMsgs'); box.scrollTop = box.scrollHeight; }
+function addChips(){
+  var box = document.getElementById('colloChips');
+  box.innerHTML = '';
+  var sug = ['How do I report a problem?','Who is the Overseer?','How do I sign in?','Contact WhatsApp'];
+  sug.forEach(function(s){
+    var b = document.createElement('button');
+    b.textContent = s;
+    b.onclick = function(){ document.getElementById('colloInput').value = s; colloSend(); };
+    box.appendChild(b);
+  });
+}
+function colloUserSend(){
+  var inp = document.getElementById('colloInput');
+  var v = (inp.value||'').trim();
+  if(!v) return;
+  inp.value='';
+  addColloMsg('user', v);
+  if(role==='student') maybeShowRateNudge(); // nudge students to rate after interacting
+  collo.hist.push({ role:'user', text: v });
+  if(collo.hist.length > 10) collo.hist = collo.hist.slice(-10);
+  if(collo.aiEnabled){
+    colloAddTyping();
+    colloAskServer(v).then(function(r){
+      colloRemoveTyping();
+      var reply = (r.ok && r.d && r.d.reply) ? r.d.reply : colloAnswer(v);
+      if(reply){ collo.hist.push({ role:'bot', text: reply }); if(collo.hist.length>10) collo.hist=collo.hist.slice(-10); }
+      addColloMsg('bot', reply || collo.fallback, true);
+      addChips();
+    });
+  } else {
+    // no real AI configured — use the fast offline keyword answer
+    setTimeout(function(){
+      var reply = colloAnswer(v);
+      collo.hist.push({ role:'bot', text: reply });
+      addColloMsg('bot', reply, true);
+      addChips();
+    }, 280 + Math.min(500, v.length*5));
+  }
+}
+function colloSend(){ colloUserSend(); }
+function colloAskServer(v){
+  var ctrl = new AbortController();
+  var timer = setTimeout(function(){ ctrl.abort(); }, 9000);
+  return fetch('/api/ai/chat', {
+    method:'POST', headers:{ 'Content-Type':'application/json' },
+    body: JSON.stringify({ message: v, history: collo.hist }),
+    signal: ctrl.signal
+  }).then(function(r){ return r.json().then(function(d){ return { ok: r.ok, d: d }; }); })
+    .catch(function(){ return { ok:false }; })
+    .finally(function(){ clearTimeout(timer); });
+}
+function colloAddTyping(){ addColloMsg('bot', '…', false); collo.typing = true; }
+function colloRemoveTyping(){
+  if(collo.typing){
+    var m = document.getElementById('colloMsgs');
+    var last = m && m.lastChild;
+    if(last && last.className.indexOf('cmsg') === 0 && last.textContent.trim() === '…') m.removeChild(last);
+    collo.typing = false;
+  }
+}
+// Enter key sends
+var colloInputEl = document.getElementById('colloInput');
+if(colloInputEl){ colloInputEl.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); colloSend(); } }); }
+
+function colloTokens(s){
+  return String(s||'').toLowerCase().replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim().split(' ');
+}
+function colloAnswer(msg){
+  var text = String(msg||'').trim().toLowerCase();
+  if(!text) return 'Please type a question, comrade. 🙂';
+  var toks = colloTokens(text);
+  // ---- dynamic: greeting ----
+  if(/(^|\s)(hi|hello|hey|jambo|habari|yo|sasa|how are you)(\s|$)/.test(text)) return collo.greeting;
+  // ---- dynamic: the user's own record ----
+  if(/\b(my\s+)?(record|room|block|details|where do i|profile|hostel)\b/.test(text) && (/\b(what|which|my|where|show|tell|about)\b/.test(text))){
+    if(me && me.name){ return 'Here is what I can see for you, comrade 🙂\n• Name: ' + me.name + '\n• Reg: ' + me.reg + '\n• Block ' + me.block + ' · Room ' + me.room + (me.roomType ? ' ('+me.roomType+')' : '') + '\n\nNeed to change something? Only the Overseer can edit records — contact him on WhatsApp ' + OVERSEER_DISPLAY + '.';
+    }
+    return 'I can only see your record after you sign in as a student. Tap "🔐 Sign In" at the top, then ask me again. 🙂';
+  }
+  if(/\bsign\s*in\b|\blogin\b|\blog ?in\b|\baccess my/.test(text)){
+    return "To sign in: tap the '🔐 Sign In' button at the top. \n• Overseer: enter your password.\n• Student: enter your Reg/Adm No. and the PIN issued by the Overseer.\n\nNo PIN yet? Message the Overseer on WhatsApp " + OVERSEER_DISPLAY + ".";
+  }
+  // ---- FAQ matching by token overlap ----
+  var best = null, bestScore = 0;
+  collo.faq.forEach(function(f){
+    var qq = colloTokens(f.q).concat(colloTokens(f.q.split('/').join(' ')));
+    var qset = {};
+    qq.forEach(function(t){ if(t.length>2) qset[t]=true; });
+    var score = 0;
+    toks.forEach(function(t){ if(t.length>2 && qset[t]) score++; });
+    // give weight to the first/last word phrasing so short queries still match
+    if(score>bestScore){ bestScore=score; best=f; }
+  });
+  if(best && bestScore>0) return best.a;
+  // ---- fallback ----
+  return collo.fallback;
+}
+
+/* ---- Overseer editor for Collo AI (Settings) ---- */
+function caFaqRow(q,a){
+  return '<div style="border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:8px;">'
+    + '<input type="text" class="ca-q" value="'+esc(q)+'" placeholder="Question e.g. How do I report a problem?" style="margin-bottom:6px;">'
+    + '<textarea class="ca-a" rows="2" placeholder="Answer Collo AI should give">'+esc(a)+'</textarea>'
+    + '<div style="text-align:right;margin-top:4px;"><button type="button" class="btn danger sm" onclick="caDelRow(this)">Remove</button></div>'
+    + '</div>';
+}
+function caRender(list){
+  var box = document.getElementById('caFaqList');
+  box.innerHTML = list.map(function(f){ return caFaqRow(f.q, f.a); }).join('');
+}
+function caRead(){
+  var rows = Array.prototype.map.call(document.querySelectorAll('#caFaqList > div'), function(d){
+    return { q: (d.querySelector('.ca-q')||{}).value||'', a: (d.querySelector('.ca-a')||{}).value||'' };
+  }).filter(function(r){ return (r.q||'').trim() || (r.a||'').trim(); });
+  return { name: document.getElementById('caName').value.trim(), greeting: document.getElementById('caGreet').value,
+    visibility: document.getElementById('caVis').value, faq: rows };
+}
+function caAddFaq(){
+  document.getElementById('caFaqList').insertAdjacentHTML('beforeend', caFaqRow('', ''));
+}
+function caDelRow(btn){ btn.closest('div').remove(); }
+function loadChatbot(refreshForm){
+  api('/api/settings').then(function(d){
+    var cb = (d.settings && d.settings.chatbot) || {};
+    document.getElementById('caName').value = cb.name || 'Collo AI';
+    document.getElementById('caGreet').value = colloFillTemplate(cb.greeting || '');
+    var visEl = document.getElementById('caVis');
+    if(visEl){ visEl.value = (cb.visibility === 'everyone' || cb.visibility === 'off') ? cb.visibility : 'overseer'; }
+    caRender(cb.faq || []);
+  }).catch(function(){});
+}
+function caSeed(){
+  // Fill the editor with helpful default questions/answers
+  var defaults = [
+    { q:'Who is the Overseer?', a:'The Overseer of Usambara Male Hostels is '+OVERSEER_NAME+'. He looks after Blocks 2, 3, 4 & 5 and answers every report. Reach him on WhatsApp '+OVERSEER_DISPLAY+'.' },
+    { q:'How do I report a problem?', a:'Sign in as a student, open "My Record", describe the problem, choose urgency and tap Submit Report. The Overseer is alerted instantly. Or WhatsApp '+OVERSEER_DISPLAY+'.' },
+    { q:'How do I sign in?', a:'Tap "🔐 Sign In". Overseer uses a password; students use Reg/Adm No. plus the PIN the Overseer gave them.' },
+    { q:'What blocks/rooms are available?', a:'Usambara Male Hostels has Blocks 2, 3, 4 & 5 with single, double, quad and hexagon rooms. Ask the Overseer for availability.' }
+  ];
+  caRender(defaults);
+}
+function caSave(){
+  api('/api/settings', { method:'PUT', body:{ settings:{ chatbot: caRead() }}})
+    .then(function(){ toast('Collo AI saved. ✅'); colloLoad(); })
+    .catch(toastErr);
+}
+
+/* ---- Connect Collo AI to the real Gemini brain (server-side key) ---- */
+function aiStatus(showInSettings){
+  api('/api/ai/status').then(function(d){
+    collo.aiEnabled = !!(d && d.enabled);
+    var el = document.getElementById('aiStatus');
+    if(!el) return;
+    if(collo.aiEnabled){
+      var prov = (d.provider==='groq') ? 'Groq' : 'Gemini';
+      el.innerHTML = '<div class="lbl">AI status</div><div class="val" style="color:var(--green-d);">🧠 Connected via ' + prov + ' — ' + esc(d.model||'') + '</div>'
+        + '<div style="font-size:12px;margin-top:4px;color:var(--muted);">Collo AI now answers with real AI. Remove the key anytime to go back to the free built-in assistant.</div>';
+    } else {
+      el.innerHTML = '<div class="lbl">AI status</div><div class="val" style="color:var(--muted);">⚙️ Offline assistant (free) — no AI key connected</div>'
+        + '<div style="font-size:12px;margin-top:4px;color:var(--muted);">Add a free Groq (gsk_…) or Gemini (AIza…) key above to make Collo AI answer any question accurately.</div>';
+    }
+  }).catch(function(){});
+}
+function aiSaveKey(){
+  var k = document.getElementById('gemKey').value.trim();
+  if(!k){ toast('Paste your Groq (gsk_…) or Gemini (AIza…) key first.'); return; }
+  api('/api/ai/key', { method:'POST', body:{ key:k } })
+    .then(function(d){ toast('AI connected! Collo AI is now smarter. 🧠'); document.getElementById('gemKey').value=''; colloLoad(); aiStatus(); })
+    .catch(function(err){ toastErr(err); });
+}
+function aiClearKey(){
+  if(!confirm('Disconnect the AI and remove its key from the server?')) return;
+  api('/api/ai/key', { method:'POST', body:{ key:'' } })
+    .then(function(){ toast('AI disconnected. Collo AI back to offline assistant.'); colloLoad(); aiStatus(); })
+    .catch(toastErr);
+}
+
+/* ---------------- Init ---------------- */
+probeServer(); // sets serverReachable + shows offline banner if unreachable
+loadTheme(false);  // apply the saved colour/layout theme on load
+boot();
+colloLoad();  // load Collo AI settings + visibility (so the bubble shows/hides correctly)
+</script>
+</body>
+</html>
